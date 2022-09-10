@@ -47,13 +47,16 @@
     a {
         color: var(--color-base-2);
         text-decoration: none;
+        transition: .2s;
+
     }
 
-    button:hover,
     a:hover {
         color: var(--color-base-2);
-        transform: translateY(-5%);
+        text-decoration: none;
     }
+
+
 
     body {
         direction: rtl;
@@ -124,10 +127,16 @@
         margin: var(--app-gutter) 0;
     }
 
-    .add__new_container {}
 
     .button__container {
         text-align: center;
+        color: var(--color-base-1);
+
+        transition: .2s;
+    }
+
+    .add__new_btn:hover {
+        color: var(--color-base-1);
     }
 
     .add__new_btn {
@@ -137,8 +146,6 @@
         color: var(--color-prime);
 
     }
-
-    .add__new_btn:hover {}
 
 
     .all__devices {
@@ -165,7 +172,7 @@
     }
 
     .tracked__time {
-        background-color: var(--color-base-1);
+        /* background-color: var(--color-base-1); */
         user-select: all;
     }
 
@@ -177,6 +184,9 @@
         border-radius: var(--btn-border-radius);
     }
 
+    .floating:hover {
+        transform: translateY(-5%);
+    }
 
     .stop {
         background-color: var(--color-red);
@@ -217,8 +227,13 @@
         opacity: .05;
     }
 
-    .create__invoice_btn:hover {
-        transform: translateY(0px);
+    .invoice__btn {
+        color: var(--color-base-2);
+        transition: .2s;
+    }
+
+    .invoice__btn>button>a:hover {
+        opacity: .7;
     }
 
 
@@ -235,6 +250,14 @@
         animation: blinker 1s ease-in-out infinite; */
     }
 
+
+
+    .disabled {
+        /* background-color: var(--color-disabled); */
+        pointer-events: none;
+        border-radius: var(--btn-border-radius);
+        color: var(--color-base-2);
+    }
 
     @keyframes blinker {
 
@@ -255,14 +278,14 @@
             <p class="app__title">مركز MZ الترفهي</p>
         </div>
         <div class="add__new_container">
-            <div class="button__container">
+            <div class="button__container floating">
 
                 <a href="/v2/owner/entity/workflow/le_workflow-type-entity-1/list"
                     class="add__new_btn bttn d-flex justify-content-around " target="_blank">
                     <div class="btn__icon">
                         <i class="fa-solid fa-plus"></i>
                     </div>
-                    <div class="btn__title">
+                    <div class="btn__title ">
                         جهاز جديد
                     </div>
                 </a>
@@ -283,8 +306,8 @@
                     </div>
                 </div>
                 <div class="action__btn d-flex justify-content-around col-3">
-                    <button class="start__btn bttn start" type="button" data-serial="1">ابدأ الآن</button>
-                    <button class="stop__btn bttn stop" type="button">إنهاء</button>
+                    <button class="start__btn bttn start floating" type="button" data-serial="1">ابدأ الآن</button>
+                    <button class="stop__btn bttn stop floating" type="button">إنهاء</button>
                 </div>
 
                 <div class="time__tracker">
@@ -292,7 +315,7 @@
                     <p class="timer m-0">00:00:00</p>
                     <p class="the__end m-0">00:00:00</p>
                 </div>
-                <div class="invoice__btn">
+                <div class="invoice__btn disabled floating">
                     <button class="create__invoice_btn bttn invoice" disabled>
                         <a href="/owner/invoices/add" target="_blank">
                             <span>إنشاء فاتورة</span>
@@ -310,8 +333,8 @@
                     </div>
                 </div>
                 <div class="action__btn d-flex justify-content-around col-3">
-                    <button class="start__btn bttn start" type="button" data-serial="2">ابدأ الآن</button>
-                    <button class="stop__btn bttn stop" type="button">إنهاء</button>
+                    <button class="start__btn bttn start floating" type="button" data-serial="1">ابدأ الآن</button>
+                    <button class="stop__btn bttn stop floating" type="button">إنهاء</button>
                 </div>
 
                 <div class="time__tracker">
@@ -319,12 +342,12 @@
                     <p class="timer m-0">00:00:00</p>
                     <p class="the__end m-0">00:00:00</p>
                 </div>
-                <div class="invoice__btn">
+                <div class="invoice__btn disabled floating">
                     <button class="create__invoice_btn bttn invoice" disabled>
-
-                        <span>إنشاء فاتورة</span>
-                        <p class="tracked__time m-0 p-.4 rounded-1">00:00:00</p>
-
+                        <a href="/owner/invoices/add" target="_blank">
+                            <span>إنشاء فاتورة</span>
+                            <p class="tracked__time m-0 p-.4 rounded-1">00:00:00</p>
+                        </a>
                     </button>
 
                 </div>
@@ -343,6 +366,15 @@
     <script>
         $(document).ready(() => {
 
+
+
+            function changeBtn(txt, color, bckColor, selector = $this) {
+                $this.html(txt)
+                $this.css({
+                    color: color,
+                    background: bckColor
+                })
+            }
 
 
 
@@ -491,12 +523,8 @@
                     // console.log(serial instanceof StartButton)
 
                     $this.parent().siblings(".invoice__btn").attr("disabled", "disabled")
-                    $this.html("إيقاف")
 
-                    $this.css({
-                        background: "var(--color-turquoise)",
-                        color: "var(--color-base-1)",
-                    })
+                    changeBtn("إيقاف", "var(--color-base-1)", "var(--color-turquoise)")
                     $this.parent().parent().find(".device__card").addClass("playing")
                     startTime = new Date().toLocaleTimeString().slice(0, -3)
                     $this.attr("data-start_time", startTime)
@@ -508,21 +536,12 @@
                     }
                     let spentTime = $this.siblings(".stop__btn").data("duration")
                     let timeDisplay = $this.siblings(".stop__btn").data("duration")
-
-                    $this.html("استكمال")
-                    $this.css({
-                        background: "var(--color-green)",
-                        color: "var(--color-base-1)",
-                    })
+                    changeBtn("استكمال", "var(--color-base-1)", "var(--color-green)")
 
                 } else {
 
                     intervalIds[serialID]
-                    $this.html("إيقاف")
-                    $this.css({
-                        background: "var(--color-base-1)",
-                        color: "var(--color-base-2)",
-                    })
+                    changeBtn("إيقاف", "var(--color-base-1)", "var(--color-turquoise)")
                 }
             })
 
@@ -534,9 +553,6 @@
                 $this = $(this)
                 endTime = new Date().toLocaleTimeString().slice(0, -3)
                 $this.attr("data-end_time", endTime)
-                // let duration = (endTime - startTime) / 1000
-                // console.log(duration)
-                // $this.attr("data-duration", duration)
 
                 if ($this.html() == "إنهاء" && $this.siblings(".start__btn").html() == "ابدأ الآن") {
                     console.log("GoTCHA!")
@@ -544,15 +560,13 @@
 
                 } else if ($this.html() == "إنهاء") {
 
-                    $this.siblings(".start__btn").attr("disabled", "disabled")
-                    $this.html("جديد")
+                    $this.siblings(".start__btn").attr("disabled", "disabled").removeClass("floating")
+
                     dur = $this.data("duration")
                     $this.parent().siblings(".invoice__btn").find("p").html(dur)
-
-                    $this.css({
-                        background: "var(--color-blue)",
-                        color: "var(--color-base-1)",
-                    })
+                    $this.parent().siblings(".invoice__btn").removeClass(
+                        "disabled")
+                    changeBtn("جديد", "var(--color-base-1)", "var(--color-blue)")
 
                     // if (this.seconds < 3) $(".create__invoice_btn").css({
                     //     pointerEvents: "none"
@@ -563,30 +577,28 @@
                     //     })
 
                     let theStart = $this.siblings(".start__btn").data("start_time")
-                    // let theStart = $this.parent().parent().closest(".start__btn").data("start_time")
-
-                    let theEnd = $this.data("end_time")
-
                     $(".the__start").html(theStart).fadeIn()
+                    let theEnd = $this.data("end_time")
                     $(".the__end").html(theEnd).fadeIn()
 
                 } else {
-                    $this.html("إنهاء")
-                    $this.siblings(".start__btn").removeAttr("disabled")
+                    changeBtn("إنهاء", "var(--color-base-1)", "var(--color-red)")
+
+                    $this.siblings(".start__btn").removeAttr("disabled").addClass("floating")
 
                     $(".the__start, .the__end").html(`00:00:00`).fadeOut()
                     $this.parent().parent().find(".time__tracker .timer").html(`00:00:00`)
                     $this.parent().parent().find(".invoice .tracked__time ").html(`00:00:00`)
 
-                    $this.css({
-                        background: "var(--color-red)",
-                        color: "var(--color-base-1)"
-                    })
-                    $(".create__invoice_btn").attr("disabled")
+                    $this.parent().siblings(".invoice__btn").addClass(
+                        "disabled")
+
                     $(".start__btn").attr("disabled")
                 }
 
-                $(".start__btn").html("ابدأ الآن")
+                // changeBtn("ابدأ الآن", "var(--color-base-2)", "var(--color-base-1)", $(".start__btn"))
+
+                $this.siblings(".start__btn").html("ابدأ الآن")
                 $(".start__btn").css({
                     background: "var(--color-base-1)",
                     color: "var(--color-base-2)",
