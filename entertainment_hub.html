@@ -62,7 +62,25 @@
         direction: rtl;
         background-color: #fff;
         color: var(--color-base-2);
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+        /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important; */
+
+
+    }
+
+    .background_div {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: .1;
+        z-index: -1;
+        filter: saturate(0);
+        background-image: url("./1.png");
+        background-size: 100%;
+        background-repeat: no-repeat;
+        background-blend-mode: luminosity;
+
     }
 
     :root {
@@ -274,6 +292,7 @@
 </style>
 
 <body>
+    <div class="background_div"></div>
     <header class="header d-flex align-items-center justify-content-around">
         <div class="title__container">
             <p class="app__title">مركز MZ الترفهي</p>
@@ -328,7 +347,7 @@
             </div>
             <div class="device__row d-flex justify-content-around align-items-center" data-device_id="sd">
                 <div class=" device__card d-flex flex-column align-items-center">
-                    <p class="device__name h3 text-center">جهاز رقم #1<br><span class="h6 mt-1">(بلاى ستيشن)</span></p>
+                    <p class="device__name h3 text-center">جهاز رقم #2<br><span class="h6 mt-1">(بلاى ستيشن)</span></p>
                     <div class="device__avatar text-center">
                         <i class="fa-brands fa-playstation"></i>
                     </div>
@@ -378,98 +397,6 @@
             }
 
 
-
-            let allIntervals = {};
-
-            class StartButton {
-
-                constructor() {
-                    this.isRunning = false;
-                    this.isResumed = false;
-                    this.currTimer = 0;
-                    this.runTimer;
-                    this.timer = $this.parent().siblings(".time__tracker").find(".timer")
-                    this.secDisplay;
-                    this.minDisplay;
-                    this.hourDisplay;
-                    this.timeDisplay;
-                    this.hours = 0;
-                    this.minutes = 0;
-                    this.seconds = 0;
-                    this.timeDisplay
-                    this.serialIDD
-                    this.instanceName
-                }
-
-                timerDisplay() {
-
-                    if (this.seconds < 59) {
-                        this.seconds++;
-                    } else if (this.minutes < 59) {
-                        this.seconds = 0;
-                        this.minutes++;
-                    } else {
-                        this.hours++;
-                    }
-                    this.secDisplay = this.seconds.toString().length > 1 ? `${this.seconds}` :
-                        `0${this.seconds}`
-                    this.minDisplay = this.minutes.toString().length > 1 ? `${this.minutes}` :
-                        `0${this.minutes}`
-                    this.hourDisplay = this.hours.toString().length > 1 ? `${this.hours}` :
-                        `0${this.hours}`
-                    this.timeDisplay =
-                        `${this.hourDisplay}:${this.minDisplay}:${this.secDisplay}`
-                    // $this.parent().siblings(".time__tracker").find(".timer").html(
-                    //     `00:00:00`)
-                    $this.parent().siblings(".time__tracker").find(".timer").html(this
-                        .timeDisplay)
-                    $this.siblings(".stop__btn").attr("data-duration", this.timeDisplay)
-                    // this.timer.parent().siblings(".time__tracker").find(".timer").html()
-                    console.log(this.seconds)
-                }
-                start() {
-                    this.serialIDD = $this.data("serial")
-                    this.instanceName = `timerNum_${this.serialIDD}`
-                    if (!this.isRunning) {
-                        this.isRunning = true
-                        this.currTimer = this.currTimer;
-                        allIntervals[this.instanceName] = function () {
-                            setInterval(() => {
-                                console.log(++this.currTimer, this.serialIDD)
-                                this.timerDisplay()
-                            }, 1000)
-                        }
-                        // console.log(allIntervals[serialID])
-
-                        // this.runTimer[serialIDD] = setInterval(() => {
-                        // this.allIntervals[serialIDD] = setInterval(() => {
-                        //     console.log(++this.currTimer, this.serialIDD)
-                        //     this.timerDisplay()
-                        // }, 1000)
-                    }
-
-                }
-                pause() {
-                    if (this.isRunning) {
-                        // window.clearInterval(window.runTimer)
-                        clearInterval(this.runTimer)
-                        this.isRunning = false;
-                        this.isResumed = false;
-                        console.log("paused")
-                    }
-                }
-                resume() {
-                    if (!this.isResumed) {
-                        this.currTimer = this.currTimer
-                        this.runTimer = setInterval(() => {
-                            this.timerDisplay()
-                        }, 1000)
-                        this.isResumed = true;
-                        console.log("isResumed")
-                    }
-                }
-            }
-
             function timerrDisplay() {
 
                 let secDisplay;
@@ -512,16 +439,9 @@
                 if ($this.html() == "ابدأ الآن") {
                     serial = setInterval(() => {
                         timerrDisplay()
+                        console.log("0")
                     }, 1000)
                     intervalIds.push(serial);
-
-                    // });
-
-                    // serial.start()
-                    // console.log(allIntervals.serial)
-                    // console.log(allIntervals.timerNum_1())
-                    // console.log(allIntervals)
-                    // console.log(serial instanceof StartButton)
 
                     $this.parent().siblings(".invoice__btn").attr("disabled", "disabled")
 
@@ -536,12 +456,16 @@
                         clearInterval(intervalIds[i]);
                     }
                     let spentTime = $this.siblings(".stop__btn").data("duration")
-                    let timeDisplay = $this.siblings(".stop__btn").data("duration")
                     changeBtn("استكمال", "var(--color-base-1)", "var(--color-green)")
 
+                    intervalIds.push(serial);
                 } else {
+                    serial = setInterval(() => {
+                        timerrDisplay()
+                        console.log("0")
+                    }, 1000)
+                    intervalIds.push(serial);
 
-                    intervalIds[serialID]
                     changeBtn("إيقاف", "var(--color-base-1)", "var(--color-turquoise)")
                 }
             })
@@ -551,36 +475,37 @@
 
             $(".stop__btn").click(function () {
                 // clearInterval(theTimer)
+                for (var i = 0; i < intervalIds.length; i++) {
+                    clearInterval(intervalIds[i]);
+                }
                 $this = $(this)
                 endTime = new Date().toLocaleTimeString().slice(0, -3)
                 $this.attr("data-end_time", endTime)
 
                 if ($this.html() == "إنهاء" && $this.siblings(".start__btn").html() == "ابدأ الآن") {
-                    console.log("GoTCHA!")
+                    // console.log("GoTCHA!")
 
 
                 } else if ($this.html() == "إنهاء") {
-
+                    for (var i = 0; i < intervalIds.length; i++) {
+                        clearInterval(intervalIds[i]);
+                    }
                     $this.siblings(".start__btn").attr("disabled", "disabled").removeClass("floating")
 
                     dur = $this.data("duration")
+                    dur = $this.parent().siblings(".time__tracker").find(".timer").text()
+                    console.log(dur)
                     $this.parent().siblings(".invoice__btn").find("p").html(dur)
                     $this.parent().siblings(".invoice__btn").removeClass(
                         "disabled")
                     changeBtn("جديد", "var(--color-base-1)", "var(--color-blue)")
 
-                    // if (this.seconds < 3) $(".create__invoice_btn").css({
-                    //     pointerEvents: "none"
-                    // });
-                    // else
-                    //     $(".create__invoice_btn").css({
-                    //         pointerEvents: "all"
-                    //     })
-
                     let theStart = $this.siblings(".start__btn").data("start_time")
-                    $(".the__start").html(theStart).fadeIn()
+                    $this.parent().siblings(".time__tracker").find(".the__start").html(theStart)
+                        .fadeIn()
                     let theEnd = $this.data("end_time")
-                    $(".the__end").html(theEnd).fadeIn()
+                    $this.parent().siblings(".time__tracker").find(".the__end").html(theEnd)
+                        .fadeIn()
 
                 } else {
                     changeBtn("إنهاء", "var(--color-base-1)", "var(--color-red)")
