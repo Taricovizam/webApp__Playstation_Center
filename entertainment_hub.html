@@ -397,17 +397,17 @@
 
             class StartButton {
 
-                constructor(element) {
+                constructor() {
                     this.isRunning = false;
                     this.isResumed = false;
                     this.s = 0
                     this.m = 0
                     this.h = 0
                     this.interval;
-                    this.element = element
+                    this.element = $($this)
                 }
 
-                timerDisplay(element) {
+                timerDisplay() {
 
                     if (this.s < 59) {
                         this.s++;
@@ -422,49 +422,50 @@
                     this.mm = this.m < 10 ? `0${this.m}` : this.m
                     this.hh = this.h < 10 ? `0${this.h}` : this.h
                     this.t = `${this.hh}:${this.mm}:${this.ss}`
-                    // console.log(this.t)
+                    console.log(this.t)
                     // return this.t
 
-                    let field1 = $this.parent().siblings(".time__tracker").find(".timer")
-                    let field2 = $this.siblings(".stop__btn")
-                    console.log(field1)
-                        .html(this.t)
-                        .attr("data-duration", this.t)
+                    this.element.parent().siblings(".time__tracker").find(".timer").html(this
+                        .t)
+                    this.element.siblings(".stop__btn").attr("data-duration", this.t)
+
                 }
-                start(element) {
+                start() {
                     if (!this.isRunning) {
                         console.log("play")
-                        this.isRunning = true
+                        // this.isRunning = true
                         this.interval = setInterval(() => {
-                            this.timerDisplay(element)
+                            this.timerDisplay(this.element)
                         }, 1000)
                     }
                 }
                 pause() {
+                    this.isRunning = true;
+                    console.log(this.isRunning, !this.isResumed)
                     if (this.isRunning && !this.isResumed) {
                         console.log("paused")
-                        this.isRunning = false;
-                        this.isResumed = true;
                         clearInterval(this.interval)
                     }
                 }
                 resume() {
+                    this.isRunning = false;
+                    this.isResumed = true
                     if (!this.isRunning && this.isResumed) {
                         this.isRunning = true;
                         this.isResumed = false;
 
                         this.interval = setInterval(() => {
-                            this.timerDisplay()
+                            this.timerDisplay(this.element)
                         }, 1000)
                         console.log("resumed")
                     }
                 }
-                ended() {
-                    if (this.isRunning && !this.isResumed) {
-                        this.isRunning = false;
-                        console.log("ended")
-                    }
-                }
+                // ended() {
+                //     if (this.isRunning && !this.isResumed) {
+                //         this.isRunning = false;
+                //         console.log("ended")
+                //     }
+                // }
             }
 
 
@@ -473,10 +474,10 @@
             $(".start__btn").click(function () {
                 $this = $(this)
 
+                let runTimer = new StartButton()
 
                 if ($this.html() == "ابدأ الآن") {
-                    let runTimer = new StartButton()
-                    runTimer.start(".start__btn")
+                    runTimer.start()
 
                     $this.parent().siblings(".invoice__btn").attr("disabled", "disabled")
 
@@ -486,20 +487,15 @@
                     $this.attr("data-start_time", startTime)
 
                 } else if ($this.html() == "إيقاف") {
+                    runTimer.pause()
+                    console.log("stop")
 
-                    for (var i = 0; i < intervalIds.length; i++) {
-                        clearInterval(intervalIds[i]);
-                    }
                     let spentTime = $this.siblings(".stop__btn").data("duration")
                     changeBtn("استكمال", "var(--color-base-1)", "var(--color-green)")
 
-                    intervalIds.push(serial);
                 } else {
-                    serial = setInterval(() => {
-                        timerrDisplay()
-                        console.log("0")
-                    }, 1000)
-                    intervalIds.push(serial);
+                    runTimer.resume()
+
 
                     changeBtn("إيقاف", "var(--color-base-1)", "var(--color-turquoise)")
                 }
@@ -509,16 +505,14 @@
 
 
             $(".stop__btn").click(function () {
-                // clearInterval(theTimer)
-                for (var i = 0; i < intervalIds.length; i++) {
-                    clearInterval(intervalIds[i]);
-                }
                 $this = $(this)
+
+                runTimer.stop()
                 endTime = new Date().toLocaleTimeString().slice(0, -3)
                 $this.attr("data-end_time", endTime)
 
                 if ($this.html() == "إنهاء" && $this.siblings(".start__btn").html() == "ابدأ الآن") {
-                    // console.log("GoTCHA!")
+                    console.log("GoTCHA!")
 
 
                 } else if ($this.html() == "إنهاء") {
