@@ -386,8 +386,6 @@
     <script>
         $(document).ready(() => {
 
-
-
             function changeBtn(txt, color, bckColor, selector = $this) {
                 $this.html(txt)
                 $this.css({
@@ -397,51 +395,88 @@
             }
 
 
-            function timerrDisplay() {
+            class StartButton {
 
-                let secDisplay;
-                let minDisplay;
-                let hourDisplay;
-                let timeDisplay;
-                if (seconds < 59) {
-                    seconds++;
-                } else if (minutes < 59) {
-                    seconds = 0;
-                    minutes++;
-                } else {
-                    hours++;
+                constructor(element) {
+                    this.isRunning = false;
+                    this.isResumed = false;
+                    this.s = 0
+                    this.m = 0
+                    this.h = 0
+                    this.interval;
+                    this.element = element
                 }
-                secDisplay = seconds.toString().length > 1 ? `${seconds}` :
-                    `0${seconds}`
-                minDisplay = minutes.toString().length > 1 ? `${minutes}` :
-                    `0${minutes}`
-                hourDisplay = hours.toString().length > 1 ? `${hours}` :
-                    `0${hours}`
-                timeDisplay =
-                    `${hourDisplay}:${minDisplay}:${secDisplay}`
-                $this.parent().siblings(".time__tracker").find(".timer").html(timeDisplay)
-                $this.siblings(".stop__btn").attr("data-duration", timeDisplay)
+
+                timerDisplay(element) {
+
+                    if (this.s < 59) {
+                        this.s++;
+                    } else if (this.m < 59) {
+                        this.s = 0;
+                        this.m++;
+                    } else {
+                        this.h++;
+                    }
+
+                    this.ss = this.s < 10 ? `0${this.s}` : this.s
+                    this.mm = this.m < 10 ? `0${this.m}` : this.m
+                    this.hh = this.h < 10 ? `0${this.h}` : this.h
+                    this.t = `${this.hh}:${this.mm}:${this.ss}`
+                    // console.log(this.t)
+                    // return this.t
+
+                    let field1 = $this.parent().siblings(".time__tracker").find(".timer")
+                    let field2 = $this.siblings(".stop__btn")
+                    console.log(field1)
+                        .html(this.t)
+                        .attr("data-duration", this.t)
+                }
+                start(element) {
+                    if (!this.isRunning) {
+                        console.log("play")
+                        this.isRunning = true
+                        this.interval = setInterval(() => {
+                            this.timerDisplay(element)
+                        }, 1000)
+                    }
+                }
+                pause() {
+                    if (this.isRunning && !this.isResumed) {
+                        console.log("paused")
+                        this.isRunning = false;
+                        this.isResumed = true;
+                        clearInterval(this.interval)
+                    }
+                }
+                resume() {
+                    if (!this.isRunning && this.isResumed) {
+                        this.isRunning = true;
+                        this.isResumed = false;
+
+                        this.interval = setInterval(() => {
+                            this.timerDisplay()
+                        }, 1000)
+                        console.log("resumed")
+                    }
+                }
+                ended() {
+                    if (this.isRunning && !this.isResumed) {
+                        this.isRunning = false;
+                        console.log("ended")
+                    }
+                }
             }
-            let hours = 0;
-            let minutes = 0;
-            let seconds = 0;
-            var intervalIds = [];
+
+
+
 
             $(".start__btn").click(function () {
                 $this = $(this)
 
-                // let allIntervals = []
-                let serialID = $this.data("serial")
-                let serial = `newTimer${serialID}`
 
-                // serial = new StartButton();
-                console.log(serial)
                 if ($this.html() == "ابدأ الآن") {
-                    serial = setInterval(() => {
-                        timerrDisplay()
-                        console.log("0")
-                    }, 1000)
-                    intervalIds.push(serial);
+                    let runTimer = new StartButton()
+                    runTimer.start(".start__btn")
 
                     $this.parent().siblings(".invoice__btn").attr("disabled", "disabled")
 
