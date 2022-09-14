@@ -434,17 +434,17 @@
                     if (!this.isRunning) {
                         console.log("play")
                         // this.isRunning = true
-                        this.interval = setInterval(() => {
+                        this.interval.id = setInterval(() => {
                             this.timerDisplay(this.element)
                         }, 1000)
                     }
                 }
                 pause() {
                     this.isRunning = true;
-                    console.log(this.isRunning, !this.isResumed)
+                    console.log(this.element)
                     if (this.isRunning && !this.isResumed) {
                         console.log("paused")
-                        clearInterval(this.interval)
+                        clearInterval(this.interval[id])
                     }
                 }
                 resume() {
@@ -488,7 +488,7 @@
 
                 } else if ($this.html() == "إيقاف") {
                     runTimer.pause()
-                    console.log("stop")
+
 
                     let spentTime = $this.siblings(".stop__btn").data("duration")
                     changeBtn("استكمال", "var(--color-base-1)", "var(--color-green)")
@@ -500,8 +500,6 @@
                     changeBtn("إيقاف", "var(--color-base-1)", "var(--color-turquoise)")
                 }
             })
-
-
 
 
             $(".stop__btn").click(function () {
