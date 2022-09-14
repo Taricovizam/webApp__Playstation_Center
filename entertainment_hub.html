@@ -151,11 +151,56 @@
         margin: var(--app-gutter) 0;
     }
 
+    .buttons__container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4em;
+    }
+
+    .input__field {
+        border-radius: var(--btn-border-radius);
+        padding: var(--padding-container-1);
+        max-width: 100px;
+        text-align: center;
+        outline: none;
+        border: none;
+
+    }
+
+    .input__field::-webkit-input-placeholder {
+        font-size: 13px;
+        transition: var(--trans-1);
+    }
+
+    .input__field:focus::placeholder {
+        padding: 100px
+    }
+
     .btn__title {
         margin-right: 12px;
     }
 
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+
     .button__container {
+        position: relative;
+        text-align: center;
+        color: var(--color-base-1);
+        transition: .2s;
+        display: flex;
+    }
+
+    .action__btn {
+        gap: var(--padding-container-1)
+    }
+
+    .add__new_btn {
         position: relative;
         text-align: center;
         overflow: hidden;
@@ -165,7 +210,7 @@
         font-weight: 600;
     }
 
-    .button__container::before {
+    .add__new_btn::before {
         content: "+";
         display: block;
         font-size: 90px;
@@ -220,6 +265,7 @@
 
     .bttn {
         margin: auto;
+        min-width: 100px;
         padding: var(--padding-text-1) var(--padding-text-2);
         text-align: center;
         box-shadow: var(--ui-drop-shadow-2);
@@ -317,7 +363,7 @@
         position: absolute;
         left: 50%;
         transform: translate(-50%, 0%);
-        z-index: 3;
+        z-index: 1;
         padding: var(--padding-container-1);
         width: 30%;
         background-color: var(--color-base-1);
@@ -498,9 +544,15 @@
                         <i class="fa-brands fa-playstation"></i>
                     </div>
                 </div>
-                <div class="action__btn d-flex justify-content-around col-3">
-                    <button class="start__btn bttn start floating" type="button" data-serial="1">ابدأ الآن</button>
-                    <button class="stop__btn bttn stop floating" type="button">إنهاء</button>
+                <div class="buttons__container">
+                    <div
+                        class="action__btn d-flex justify-content-around align-items-center text-center flex-column col-3 ">
+                        <button class="start__btn bttn start floating" type="button" data-serial="1">ابدأ</button>
+                        <button class="stop__btn bttn stop floating" type="button">إنهاء</button>
+                    </div>
+
+                    <div class="input__container"><input class="input__field" type="number" placeholder="أدخل الوقت" />
+                    </div>
                 </div>
 
                 <div class="time__tracker">
@@ -730,32 +782,41 @@
             $(".start__btn").click(function () {
                 $this = $(this);
                 let runTimer = new StartButton()
-                if ($this.html() == "ابدأ الآن") {
-                    runTimer.start()
+                let countDownField = $this.find(".input__field")
+
+                if (countDownField == "" || countDownField == "0" || countDownField == undefined ||
+                    countDownField == " ") {
 
 
-                    $this.parent().siblings(".invoice__btn").attr("disabled", "disabled")
-                    changeBtn("إيقاف", "var(--color-base-1)", "var(--color-turquoise)")
-                    $this.parent().parent().find(".device__card").addClass("playing")
-                    startTime = new Date().toLocaleTimeString().slice(0, -3)
-                    $this.attr("data-start_time", startTime)
+                    if ($this.html() == "ابدأ الآن") {
+                        runTimer.start()
 
-                } else if ($this.html() == "إيقاف") {
-                    let intervID = $this.attr("data-interval")
-                    console.log(intervID)
-                    runTimer.pause(intervID)
 
-                    let spentTime = $this.siblings(".stop__btn").data("duration")
-                    changeBtn("استكمال", "var(--color-base-1)", "var(--color-green)")
+                        $this.parent().siblings(".invoice__btn").attr("disabled", "disabled")
+                        changeBtn("إيقاف", "var(--color-base-1)", "var(--color-turquoise)")
+                        $this.parent().parent().find(".device__card").addClass("playing")
+                        startTime = new Date().toLocaleTimeString().slice(0, -3)
+                        $this.attr("data-start_time", startTime)
+
+                    } else if ($this.html() == "إيقاف") {
+                        let intervID = $this.attr("data-interval")
+                        console.log(intervID)
+                        runTimer.pause(intervID)
+
+                        let spentTime = $this.siblings(".stop__btn").data("duration")
+                        changeBtn("استكمال", "var(--color-base-1)", "var(--color-green)")
+
+                    } else {
+                        runTimer.resume()
+
+
+                        changeBtn("إيقاف", "var(--color-base-1)", "var(--color-turquoise)")
+                    }
 
                 } else {
-                    runTimer.resume()
 
-
-                    changeBtn("إيقاف", "var(--color-base-1)", "var(--color-turquoise)")
                 }
             })
-
 
 
 
