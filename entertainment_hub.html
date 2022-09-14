@@ -197,7 +197,8 @@
     }
 
     .action__btn {
-        gap: var(--padding-container-1)
+        gap: var(--padding-container-1);
+        width: fit-content;
     }
 
     .add__new_btn {
@@ -360,7 +361,7 @@
     }
 
     .loader__container {
-        position: absolute;
+        position: fixed;
         left: 50%;
         transform: translate(-50%, 0%);
         z-index: 1;
@@ -691,7 +692,7 @@
                     this.t = `${this.hh}:${this.mm}:${this.ss}`
                     console.log(this.t)
 
-                    this.element.parent().siblings(".time__tracker").find(".timer").html(this
+                    this.element.parent().parent().siblings(".time__tracker").find(".timer").html(this
                         .t)
                     this.element.siblings(".stop__btn").attr("data-duration", this.t)
                     this.element.attr("data-seconds", this.s)
@@ -719,7 +720,7 @@
                     this.t = `${this.hh}:${this.mm}:${this.ss}`
                     console.log(this.t)
 
-                    this.element.parent().siblings(".time__tracker").find(".timer").html(this
+                    this.element.parent().parent().siblings(".time__tracker").find(".timer").html(this
                         .t)
                     this.element.siblings(".stop__btn").attr("data-duration", this.t)
                     this.element.attr("data-seconds", this.ss)
@@ -761,141 +762,147 @@
             class StopButton {
                 constructor() {}
                 stop(interval) {
-                    // if (this.isRunning && !this.isResumed) {
-                    //     this.isRunning = false;
-                    //     console.log("ended")
-                    // }
+
                     clearInterval(interval)
                 }
                 reset() {
-                    if (!this.isRunning && !this.isResumed) {
-                        this.isRunning = false;
-                        this.isResumed = false;
-                        console.log("reset")
-                    }
+
+                    console.log("reset")
                 }
             }
 
 
 
 
+            function startFunction($this, $invBtn, $devCard, $stopBtn, runTimer, $countDownField) {
+
+                if ($this.html() == "ابدأ") {
+                    runTimer.start()
+
+                    $invBtn.attr("disabled", "disabled")
+                    changeBtn("إيقاف", "var(--color-base-1)", "var(--color-turquoise)")
+                    $devCard.addClass("playing")
+                    startTime = new Date().toLocaleTimeString().slice(0, -3)
+                    $this.attr("data-start_time", startTime)
+
+                } else if ($this.html() == "إيقاف") {
+                    let intervID = $this.attr("data-interval")
+                    runTimer.pause(intervID)
+
+                    let spentTime = $stopBtn.attr("data-duration")
+                    changeBtn("استكمال", "var(--color-base-1)", "var(--color-green)")
+
+                } else {
+                    runTimer.resume()
+                    changeBtn("إيقاف", "var(--color-base-1)", "var(--color-turquoise)")
+                }
+            }
+
             $(".start__btn").click(function () {
-                $this = $(this);
+                $this = $(this)
+                $stopBtn = $this.siblings(".stop__btn")
+                let $devCard = $this.parent().parent().siblings(".device__card")
+                let $timer = $this.parent().parent().siblings(".time__tracker").find(".timer")
+                let $startT = $this.parent().parent().siblings(".time__tracker").find(".the__start")
+                let $endT = $this.parent().parent().siblings(".time__tracker").find(".the__end")
+                let $invBtn = $this.parent().parent().siblings(".invoice__btn").find(".tracked__time")
+                let $countDownField = $this.parent().siblings(".input__container").find(".input__field")
+                let $countDownFieldVal = $this.parent().siblings(".input__container").find(
+                    ".input__field").val()
+                console.log($countDownField)
                 let runTimer = new StartButton()
-                let countDownField = $this.find(".input__field")
 
-                if (countDownField == "" || countDownField == "0" || countDownField == undefined ||
-                    countDownField == " ") {
+                $countDownField.attr("disabled", "disabled")
+
+                if ($countDownFieldVal == "" || $countDownFieldVal == "0" || $countDownFieldVal ==
+                    undefined || $countDownFieldVal == " ") {
+                    startFunction($this, $invBtn, $devCard, $stopBtn, runTimer, $countDownField)
+                } else {
+                    console.log("ds")
+                    // let minutes = $countDownFieldVal
+                    // let milliSec = minutes * 60000
+                    // setTimeout(() => {
+
+                    // }, milliSec)
 
 
-                    if ($this.html() == "ابدأ الآن") {
-                        runTimer.start()
+                }
+            })
 
+            stopFunction()
 
-                        $this.parent().siblings(".invoice__btn").attr("disabled", "disabled")
-                        changeBtn("إيقاف", "var(--color-base-1)", "var(--color-turquoise)")
-                        $this.parent().parent().find(".device__card").addClass("playing")
-                        startTime = new Date().toLocaleTimeString().slice(0, -3)
-                        $this.attr("data-start_time", startTime)
+            function stopFunction() {
 
-                    } else if ($this.html() == "إيقاف") {
-                        let intervID = $this.attr("data-interval")
-                        console.log(intervID)
-                        runTimer.pause(intervID)
+                $(".stop__btn").click(function () {
+                    $this = $(this)
+                    let $startBtn = $this.siblings(".start__btn")
+                    let $devCard = $this.parent().parent().siblings(".device__card")
+                    let $timer = $this.parent().parent().siblings(".time__tracker").find(".timer")
+                    let $startT = $this.parent().parent().siblings(".time__tracker").find(".the__start")
+                    let $endT = $this.parent().parent().siblings(".time__tracker").find(".the__end")
+                    let $invBtn = $this.parent().parent().siblings(".invoice__btn").find(
+                        ".tracked__time")
+                    let $countDownField = $this.parent().siblings(".input__container").find(
+                        ".input__field")
+                    let $countDownFieldVal = $this.parent().siblings(".input__container").find(
+                        ".input__field").val()
 
-                        let spentTime = $this.siblings(".stop__btn").data("duration")
-                        changeBtn("استكمال", "var(--color-base-1)", "var(--color-green)")
+                    let stopTimer = new StopButton()
+                    endTime = new Date().toLocaleTimeString().slice(0, -3)
+                    $this.attr("data-end_time", endTime)
+
+                    if ($this.html() == "إنهاء") {
+                        let intervID = $startBtn.attr("data-interval")
+                        stopTimer.stop(intervID)
+                        $startBtn.attr("disabled", "disabled").removeClass("floating")
+
+                        dur = $this.attr("data-duration")
+                        // dur = $this.parent().siblings(".time__tracker").find(".timer").text()
+
+                        $invBtn.html(dur)
+                        $invBtn.removeClass("disabled")
+                        changeBtn("جديد", "var(--color-base-1)", "var(--color-blue)")
+
+                        let theStart = $startBtn.attr("data-start_time")
+                        $startT.html(theStart).fadeIn()
+                        let theEnd = $this.attr("data-end_time")
+                        $endT.html(theEnd).fadeIn()
 
                     } else {
-                        runTimer.resume()
 
 
-                        changeBtn("إيقاف", "var(--color-base-1)", "var(--color-turquoise)")
+                        changeBtn("إنهاء", "var(--color-base-1)", "var(--color-red)")
+                        $countDownField.removeAttr("disabled")
+                        $startBtn.removeAttr("disabled").addClass("floating")
+                        $(".the__start, .the__end").html(`00:00:00`).fadeOut()
+                        $timer.html(`00:00:00`)
+                        $invBtn.html(`00:00:00`)
+                        $startBtn.attr("data-seconds", "00")
+                        $startBtn.attr("data-minutes", "00")
+                        $startBtn.attr("data-hours", "00")
+                        $invBtn.addClass("disabled")
+                        // $(".start__btn").attr("disabled")
                     }
 
-                } else {
-
-                }
-            })
-
-
-
-            $(".stop__btn").click(function () {
-                $this = $(this)
-
-                let stopTimer = new StopButton()
-
-                endTime = new Date().toLocaleTimeString().slice(0, -3)
-                $this.attr("data-end_time", endTime)
-
-                if ($this.html() == "إنهاء" && $this.siblings(".start__btn").html() == "ابدأ الآن") {
-                    let intervID = $this.siblings(".start__btn").attr("data-interval")
-
-                    stopTimer.stop(intervID)
-
-                    console.log("GoTCHA!")
-
-
-                } else if ($this.html() == "إنهاء") {
-                    let intervID = $this.siblings(".start__btn").attr("data-interval")
-
-                    stopTimer.stop(intervID)
-
-                    $this.siblings(".start__btn").attr("disabled", "disabled").removeClass("floating")
-
-                    dur = $this.data("duration")
-                    dur = $this.parent().siblings(".time__tracker").find(".timer").text()
-                    console.log(dur)
-                    $this.parent().siblings(".invoice__btn").find("p").html(dur)
-                    $this.parent().siblings(".invoice__btn").removeClass(
-                        "disabled")
-                    changeBtn("جديد", "var(--color-base-1)", "var(--color-blue)")
-
-                    let theStart = $this.siblings(".start__btn").data("start_time")
-                    $this.parent().siblings(".time__tracker").find(".the__start").html(theStart)
-                        .fadeIn()
-                    let theEnd = $this.data("end_time")
-                    $this.parent().siblings(".time__tracker").find(".the__end").html(theEnd)
-                        .fadeIn()
-
-                } else {
-                    changeBtn("إنهاء", "var(--color-base-1)", "var(--color-red)")
-
-                    $this.siblings(".start__btn").removeAttr("disabled").addClass("floating")
-
-                    $(".the__start, .the__end").html(`00:00:00`).fadeOut()
-                    $this.parent().parent().find(".time__tracker .timer").html(`00:00:00`)
-                    $this.parent().parent().find(".invoice .tracked__time ").html(`00:00:00`)
-
-                    $this.parent().siblings(".invoice__btn").addClass(
-                        "disabled")
-
-                    $(".start__btn").attr("disabled")
-                }
-
-                // changeBtn("ابدأ الآن", "var(--color-base-2)", "var(--color-base-1)", $(".start__btn"))
-
-                $this.siblings(".start__btn").html("ابدأ الآن")
-                $(".start__btn").css({
-                    background: "var(--color-base-1)",
-                    color: "var(--color-base-2)",
+                    $startBtn.html("ابدأ")
+                    $startBtn.css({
+                        background: "var(--color-base-1)",
+                        color: "var(--color-base-2)",
+                    })
+                    $devCard.removeClass("playing")
                 })
-                $this.parent().parent().find(".device__card").removeClass("playing")
 
-
-            })
-
+            }
 
             $(".create__invoice_btn").click(function () {
-                $(".timer").html(`00:00:00`)
+                $this.siblings(".time__tracker").find(".timer").html(`00:00:00`)
                 window.location.open("/owner/invoices/add")
-
             })
+
 
             loader()
 
             function loader() {
-
                 // $(".loader__container").fadeIn().css({
                 //     display: "flex"
                 // })
