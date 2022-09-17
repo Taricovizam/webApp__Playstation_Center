@@ -727,8 +727,8 @@
 
                 }
                 countDown(totalMins, $timer, x) {
-                    this.minutes = totalMins
 
+                    this.minutes = totalMins
                     this.hrs = Math.floor(this.minutes / 60)
                     // this.hrs = this.hrs > 9 ? hrs : `0${this.hrs}`
                     this.mins = Math.floor(this.minutes % 60) - 1
@@ -880,7 +880,6 @@
                     countDownTimer = setInterval(() => {
                         let x = 60
                         runTimer.countDown($countDownFieldVal, $timer, x)
-
                         // if (countDownSec > 0) {
                         //     countDownSec--;
                         //     console.log(countDownSec)
@@ -898,6 +897,7 @@
                         // console.log(t)
 
                     }, 1000)
+                    $this.addClass("disabled")
 
 
                 }
@@ -945,6 +945,8 @@
                     $startBtn.attr("data-seconds", "00")
                     $startBtn.attr("data-minutes", "00")
                     $startBtn.attr("data-hours", "00")
+                    $startBtn.removeClass("disabled")
+                    $countDownField.val("")
                     $invBtn.addClass("disabled")
                     // $(".start__btn").attr("disabled")
                 }
