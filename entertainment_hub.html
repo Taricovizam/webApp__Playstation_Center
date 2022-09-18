@@ -319,6 +319,8 @@
     .invoice__btn {
         color: var(--color-base-2);
         transition: .2s;
+        overflow: hidden;
+        position: relative;
     }
 
     .invoice__btn>button>a:hover {
@@ -327,6 +329,9 @@
 
 
 
+    .create__invoice_btn {
+    z-index: 2;
+    }
     .create__invoice_btn::after {
         /* content: "";
         width: 5px;
@@ -469,6 +474,14 @@
             transform: rotate(450deg);
         }
     }
+    .fill__pct{
+        position: absolute;
+        background: var(--color-green);
+        height: 100%;
+        width:0%;
+        z-index: -1;
+transition: var(--trans-1);
+    }
 </style>
 
 <body>
@@ -511,7 +524,7 @@
 
         <div class="all__devices d-flex flex-column flex-wrap">
 
-            <div class="device__row d-flex justify-content-around align-items-center" data-device_id="sd">
+            <!-- <div class="device__row d-flex justify-content-around align-items-center" data-device_id="sd">
                 <div class=" device__card d-flex flex-column align-items-center">
                     <p class="device__name h3 text-center">جهاز رقم #1<br><span class="h6 mt-1">(بلاى ستيشن)</span></p>
                     <div class="device__avatar text-center">
@@ -536,6 +549,39 @@
                         </a>
                     </button>
 
+                </div>
+            </div> -->
+            <div class="device__row d-flex justify-content-around align-items-center" data-device_id="sd">
+                <div class=" device__card d-flex flex-column align-items-center">
+                    <p class="device__name h3 text-center">جهاز رقم #2<br><span class="h6 mt-1">(بلاى ستيشن)</span></p>
+                    <div class="device__avatar text-center">
+                        <i class="fa-brands fa-playstation"></i>
+                    </div>
+                </div>
+                <div class="buttons__container">
+                    <div
+                        class="action__btn d-flex justify-content-around align-items-center text-center flex-column col-3 ">
+                        <button class="start__btn bttn start floating" type="button" data-serial="1">ابدأ</button>
+                        <button class="stop__btn bttn stop floating" type="button">إنهاء</button>
+                    </div>
+
+                    <div class="input__container"><input class="input__field" type="number" placeholder="أدخل الوقت" />
+                    </div>
+                </div>
+
+                <div class="time__tracker">
+                    <p class="the__start m-0">00:00:00</p>
+                    <p class="timer m-0">00:00:00</p>
+                    <p class="the__end m-0">00:00:00</p>
+                </div>
+                <div class="invoice__btn disabled floating">
+                    <div class="fill__pct"></div>
+                    <button class="create__invoice_btn bttn invoice" disabled>
+                        <a href="/owner/invoices/add" target="_blank">
+                            <span>إنشاء فاتورة</span>
+                            <p class="tracked__time m-0 p-.4 rounded-1">00:00:00</p>
+                        </a>
+                    </button>
                 </div>
             </div>
             <div class="device__row d-flex justify-content-around align-items-center" data-device_id="sd">
@@ -562,13 +608,46 @@
                     <p class="the__end m-0">00:00:00</p>
                 </div>
                 <div class="invoice__btn disabled floating">
+                    <div class="fill__pct"></div>
                     <button class="create__invoice_btn bttn invoice" disabled>
                         <a href="/owner/invoices/add" target="_blank">
                             <span>إنشاء فاتورة</span>
                             <p class="tracked__time m-0 p-.4 rounded-1">00:00:00</p>
                         </a>
                     </button>
+                </div>
+            </div>
+            <div class="device__row d-flex justify-content-around align-items-center" data-device_id="sd">
+                <div class=" device__card d-flex flex-column align-items-center">
+                    <p class="device__name h3 text-center">جهاز رقم #2<br><span class="h6 mt-1">(بلاى ستيشن)</span></p>
+                    <div class="device__avatar text-center">
+                        <i class="fa-brands fa-playstation"></i>
+                    </div>
+                </div>
+                <div class="buttons__container">
+                    <div
+                        class="action__btn d-flex justify-content-around align-items-center text-center flex-column col-3 ">
+                        <button class="start__btn bttn start floating" type="button" data-serial="1">ابدأ</button>
+                        <button class="stop__btn bttn stop floating" type="button">إنهاء</button>
+                    </div>
 
+                    <div class="input__container"><input class="input__field" type="number" placeholder="أدخل الوقت" />
+                    </div>
+                </div>
+
+                <div class="time__tracker">
+                    <p class="the__start m-0">00:00:00</p>
+                    <p class="timer m-0">00:00:00</p>
+                    <p class="the__end m-0">00:00:00</p>
+                </div>
+                <div class="invoice__btn disabled floating">
+                    <div class="fill__pct"></div>
+                    <button class="create__invoice_btn bttn invoice" disabled>
+                        <a href="/owner/invoices/add" target="_blank">
+                            <span>إنشاء فاتورة</span>
+                            <p class="tracked__time m-0 p-.4 rounded-1">00:00:00</p>
+                        </a>
+                    </button>
                 </div>
             </div>
 
@@ -726,42 +805,42 @@
                     this.element.attr("data-hours", this.hh)
 
                 }
-                countDown(totalMins, $timer, x) {
+                countDown(totalMins, $timer) {
 
                     this.minutes = totalMins
                     this.hrs = Math.floor(this.minutes / 60)
-                    // this.hrs = this.hrs > 9 ? hrs : `0${this.hrs}`
                     this.mins = Math.floor(this.minutes % 60) - 1
+                    // this.hrs = this.hrs > 9 ? hrs : `0${this.hrs}`
                     // this.mins = this.mins > 9 ? this.mins : `0${this.mins}`
+                    this.secs = 59;
 
-
-                    this.countDownSec = x
-                    this.countDownMin = this.mins > 9 ? this.mins : `0${this.mins}`
+                    this.countDownSecs = this.secs > 9 ? this.secs : `0${this.secs}`
+                    this.countDownMins = this.mins > 9 ? this.mins : `0${this.mins}`
                     this.countDownHrs = this.hrs > 9 ? this.hrs : `0${this.hrs}`
-                    // this.startingAt = `${this.hrs}:${this.mins}:00`
+                    this.startingAt = `${this.hrs}:${this.mins}:00`
 
-                    if (this.countDownSec > 0) {
-                        this.countDownSec--;
+                    if (this.countDownSecs > 0) {
+                        this.countDownSecs--;
 
-                    } else if (this.countDownMin > 0) {
-                        this.countDownSec = 59;
-                        this.countDownMin--;
+                    } else if (this.countDownMins > 0) {
+                        this.countDownSecs = 59;
+                        this.countDownMins--;
                     } else {
-                        this.countDownMin = 59;
+                        this.countDownMins = 59;
                         this.countDownHrs--;
                     }
-                    this.t = `${this.countDownHrs}:${this.countDownMin}:${this.countDownSec}`
+                    this.t = `${this.countDownHrs}:${this.countDownMins}:${this.countDownSecs}`
                     $timer.html(this.t)
 
                     console.log(this.t)
                     this.element.parent().parent().siblings(".time__tracker").find(".timer").html(this
                         .t)
-                    this.element.parent().parent().siblings(".time__tracker").find(".timer").attr(
-                        "data-timer_start", this.startingAt)
-                    this.element.parent().parent().siblings(".time__tracker").find(".timer").attr(
-                        "data-hrs", this.hrs)
-                    this.element.parent().parent().siblings(".time__tracker").find(".timer").attr(
-                        "data-mins", this.mins)
+                    // this.element.parent().parent().siblings(".time__tracker").find(".timer").attr(
+                    //     "data-timer_start", this.startingAt)
+                    // this.element.parent().parent().siblings(".time__tracker").find(".timer").attr(
+                    //     "data-hrs", this.hrs)
+                    // this.element.parent().parent().siblings(".time__tracker").find(".timer").attr(
+                    //     "data-mins", this.mins)
                     // this.element.attr("data-seconds", this.s)
                     // this.element.attr("data-minutes", this.m)
                     // this.element.attr("data-hours", this.h)
@@ -863,35 +942,61 @@
                 let $startT = $this.parent().parent().siblings(".time__tracker").find(".the__start")
                 let $endT = $this.parent().parent().siblings(".time__tracker").find(".the__end")
                 let $invBtn = $this.parent().parent().siblings(".invoice__btn").find(".tracked__time")
+                let $fillBG = $this.parent().parent().siblings(".invoice__btn").find(".fill__pct")
                 let $countDownField = $this.parent().siblings(".input__container").find(".input__field")
                 let $countDownFieldVal = $this.parent().siblings(".input__container").find(
                     ".input__field").val()
 
                 let runTimer = new StartButton()
-
                 $countDownField.attr("disabled", "disabled")
 
                 if ($countDownFieldVal == "" || $countDownFieldVal == "0" || $countDownFieldVal ==
                     undefined || $countDownFieldVal == " ") {
                     startFunction($this, $invBtn, $devCard, $stopBtn, runTimer, $countDownField)
                 } else {
-                    // console.2 = hrs
 
+                    let countDownSecs = 59
+                    let hh = Math.floor($countDownFieldVal / 60)
+                    let mm = Math.floor($countDownFieldVal % 60) - 1
+                    let count = 1
                     countDownTimer = setInterval(() => {
-                        let x = 60
-                        runTimer.countDown($countDownFieldVal, $timer, x)
-                        // if (countDownSec > 0) {
-                        //     countDownSec--;
-                        //     console.log(countDownSec)
+               
+                        let hrrs = hh < 10 ? `0${hh}` : hh
+                        let minns = mm < 10 ? `0${mm}` : mm
+                        let seccs = countDownSecs < 10 ? `0${countDownSecs}`: countDownSecs
+                        let tt = `${hrrs}:${minns}:${seccs}`
+                        $timer.html(tt)
+                        if(countDownSecs>0){
+                            count++
+                            let progressed = count/($countDownFieldVal*60)*100
+                            console.log(progressed)
+                            $fillBG.width(`+=${progressed}%`)
+                            countDownSecs--
+                        }else if(mm >0){
+                            countDownSecs = 59
+                            mm--
+                        }else if(hh>0){
+                            mm = 59
+                            hh--
+                        }else{
+                            clearInterval(countDownTimer)
+                            console.log("done")
+                        }
 
-                        // } else if (countDownMin > 0) {
-                        //     countDownSec = 59;
-                        //     countDownMin--;
+                        // runTimer.countDown($countDownFieldVal, $timer)
+
+                        // if (countDownSecs > 0) {
+                        //     countDownSecs--;
+                        //     console.log(countDownSecs)
+
+                        // } else if (countDownMins > 0) {
+                        //     countDownSecs = 59;
+                        //     countDownMins--;
                         // } else {
-                        //     countDownMin = 59;
+                        //     countDownMins = 59;
                         //     countDownHrs--;
                         // }
-                        // t = `${countDownHrs}:${countDownMin}:${countDownSec}`
+                        // t = `${countDownHrs}:${countDownMins}:${countDownSecs}`
                         // $timer.html(t)
 
                         // console.log(t)

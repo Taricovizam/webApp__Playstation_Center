@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="background_div"></div>
+    <header class="header d-flex align-items-center justify-content-around">
+        <div class="title__container">
+            <p class="app__title">مركز MZ الترفهي</p>
+        </div>
+        <div class="add__new_container">
+            <div class="button__container floating">
+
+                <a href="/v2/owner/entity/workflow/le_workflow-type-entity-1/list"
+                    class="add__new_btn bttn d-flex justify-content-around " target="_blank">
+                    <div class="btn__icon">
+                        <i class="fa-solid fa-plus"></i>
+                    </div>
+                    <div class="btn__title ">
+                        جهاز جديد
+                    </div>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="app__container d-flex flex-column ">
+
+
+        <div class="all__devices d-flex flex-column flex-wrap">
+
+            <div class="device__row d-flex justify-content-around align-items-center" data-device_id="sd">
+                <div class=" device__card d-flex flex-column align-items-center">
+                    <p class="device__name h3 text-center">جهاز رقم #1<br><span class="h6 mt-1">(بلاى ستيشن)</span></p>
+                    <div class="device__avatar text-center">
+                        <i class="fa-brands fa-playstation"></i>
+                    </div>
+                </div>
+                <div class="action__btn d-flex justify-content-around col-3">
+                    <button class="start__btn bttn start floating" type="button" data-serial="1">ابدأ الآن</button>
+                    <button class="stop__btn bttn stop floating" type="button">إنهاء</button>
+                </div>
+
+                <div class="time__tracker">
+                    <p class="the__start m-0">00:00:00</p>
+                    <p class="timer m-0">00:00:00</p>
+                    <p class="the__end m-0">00:00:00</p>
+                </div>
+                <div class="invoice__btn disabled floating">
+                    <button class="create__invoice_btn bttn invoice" disabled>
+                        <a href="/owner/invoices/add" target="_blank">
+                            <span>إنشاء فاتورة</span>
+                            <p class="tracked__time m-0 p-.4 rounded-1">00:00:00</p>
+                        </a>
+                    </button>
+
+                </div>
+            </div>
+            <div class="device__row d-flex justify-content-around align-items-center" data-device_id="sd">
+                <div class=" device__card d-flex flex-column align-items-center">
+                    <p class="device__name h3 text-center">جهاز رقم #2<br><span class="h6 mt-1">(بلاى ستيشن)</span></p>
+                    <div class="device__avatar text-center">
+                        <i class="fa-brands fa-playstation"></i>
+                    </div>
+                </div>
+                <div class="action__btn d-flex justify-content-around col-3">
+                    <button class="start__btn bttn start floating" type="button" data-serial="1">ابدأ الآن</button>
+                    <button class="stop__btn bttn stop floating" type="button">إنهاء</button>
+                </div>
+
+                <div class="time__tracker">
+                    <p class="the__start m-0">00:00:00</p>
+                    <p class="timer m-0">00:00:00</p>
+                    <p class="the__end m-0">00:00:00</p>
+                </div>
+                <div class="invoice__btn disabled floating">
+                    <button class="create__invoice_btn bttn invoice" disabled>
+                        <a href="/owner/invoices/add" target="_blank">
+                            <span>إنشاء فاتورة</span>
+                            <p class="tracked__time m-0 p-.4 rounded-1">00:00:00</p>
+                        </a>
+                    </button>
+
+                </div>
+            </div>
+
+            <div class="device__row"></div>
+            <div class="device__row"></div>
+            <div class="device__row"></div>
+        </div>
+    </main>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+        integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+</html>

@@ -1,0 +1,276 @@
+#site-footer,
+#site-header {
+    display: none;
+}
+
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+button {
+    outline: none;
+    border: none;
+    border-radius: var(--btn-border-radius);
+    box-shadow: var(--ui-drop-shadow-2);
+    transition: var(--trans-1);
+}
+
+button:focus {
+    outline: 0;
+}
+
+
+span {
+    display: inline-block;
+}
+
+a {
+    color: var(--color-base-2);
+    text-decoration: none;
+    transition: .2s;
+
+}
+
+a:hover {
+    color: var(--color-base-2);
+    text-decoration: none;
+}
+
+
+
+body {
+    direction: rtl;
+    background-color: #fff;
+    color: var(--color-base-2);
+    /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important; */
+
+
+}
+
+.background_div {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: .1;
+    z-index: -1;
+    filter: saturate(0);
+    background-image: url("./1.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-blend-mode: luminosity;
+
+}
+
+:root {
+    --color-prime: #fff;
+    --color-primary-1: #04244a;
+    --color-primary-2: #0468d7;
+    --color-red: #e63946;
+    --color-green: #37a447;
+    --color-turquoise: #37a49a;
+    --color-blue: #3766a4;
+    --color-disabled: #c1c1c1;
+
+    --color-base-1: #f8f9fb;
+    --color-base-2: #464849;
+    --ui-drop-shadow-1: 0px 8px 24px rgba(0, 0, 0, .25);
+    --ui-drop-shadow-2: 0px 3px 25px rgba(0, 0, 0, .25);
+
+    --font-size-heading-1: 60px;
+    --font-size-heading-2: 36px;
+    --font-size-heading-3: 28px;
+
+    --padding-text-1: 1em;
+    --padding-text-2: 2em;
+    --padding-container-1: 1em;
+    --padding-container-2: 2em;
+
+    --gutter: 2em;
+    --app-gutter: 15em;
+    --card-border-radius: 24px;
+    --btn-border-radius: 8px;
+    /* --ui-card-width: 484px; */
+    --trans-1: .2s;
+
+}
+
+.header {
+    width: 100vw;
+    top: 0;
+    position: fixed;
+    box-shadow: var(--ui-drop-shadow-1);
+    background-color: var(--color-base-1);
+    z-index: 1;
+    padding: var(--padding-text-1);
+
+}
+
+.app__title {
+    color: var(--color-base-2);
+    font-size: var(--font-size-heading-3);
+    font-weight: bold;
+}
+
+
+
+.the__start,
+.the__end {
+    display: none;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.app__container {
+    margin: var(--app-gutter) 0;
+}
+
+
+.button__container {
+    text-align: center;
+    color: var(--color-base-1);
+
+    transition: .2s;
+}
+
+.add__new_btn:hover {
+    color: var(--color-base-1);
+}
+
+.add__new_btn {
+    gap: 5px;
+    transition: var(--trans-1);
+    background-color: var(--color-primary-1);
+    color: var(--color-prime);
+
+}
+
+
+.all__devices {
+    gap: var(--gutter);
+    width: 100%;
+    padding: var(--padding-container-2);
+}
+
+.device__row {
+    width: 100%;
+    padding: var(--padding-container-1);
+    border-radius: 8px;
+}
+
+.device__card {
+    background-color: var(--color-base-1);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--ui-drop-shadow-1);
+    cursor: pointer;
+    overflow: hidden;
+    padding: var(--gutter);
+    position: relative;
+    width: 25%;
+}
+
+.tracked__time {
+    /* background-color: var(--color-base-1); */
+    user-select: all;
+}
+
+.bttn {
+    margin: auto;
+    padding: var(--padding-text-1) var(--padding-text-2);
+    text-align: center;
+    box-shadow: var(--ui-drop-shadow-2);
+    border-radius: var(--btn-border-radius);
+}
+
+.floating:hover {
+    transform: translateY(-5%);
+}
+
+.stop {
+    background-color: var(--color-red);
+    color: var(--color-base-1);
+}
+
+.start {
+    background-color: var(--color-base-1);
+    color: var(--color-base-2);
+}
+
+.invoic {
+    background-color: var(--color-base-1);
+    color: var(--color-base-2);
+}
+
+.device__avatar {
+    right: 0;
+    bottom: -10%;
+    position: absolute;
+
+}
+
+.playing::after {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: var(--color-red);
+    top: 10%;
+    left: 5%;
+    position: absolute;
+    animation: blinker 1s ease-in-out infinite;
+}
+
+.fa-playstation {
+    font-size: 10rem;
+    opacity: .05;
+}
+
+.invoice__btn {
+    color: var(--color-base-2);
+    transition: .2s;
+}
+
+.invoice__btn>button>a:hover {
+    opacity: .7;
+}
+
+
+
+.create__invoice_btn::after {
+    /* content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: var(--color-green);
+    top: 10%;
+    left: 5%;
+    position: absolute;
+    animation: blinker 1s ease-in-out infinite; */
+}
+
+
+
+.disabled {
+    /* background-color: var(--color-disabled); */
+    pointer-events: none;
+    border-radius: var(--btn-border-radius);
+    color: var(--color-base-2);
+}
+
+@keyframes blinker {
+
+    0%,
+    100% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
