@@ -830,46 +830,60 @@
                     this.element.attr("data-hours", this.hh)
 
                 }
-                countDown(totalMins, $timer) {
+                countDown($countDownFieldVal, $countDownField, $fillBG, $stopBtn, $invBtn, $timer) {
+                    this.countDownSecs = 59
+                    this.hh = Math.floor($countDownFieldVal / 60)
+                    this.mm = Math.floor($countDownFieldVal % 60) - 1
+                    this.count = 1
+                    this.countDownTimer = setInterval(() => {
+                        console.log(this.countDownTimer)
+                        this.hrrs = this.hh < 10 ? `0${this.hh}` : this.hh
+                        this.minns = this.mm < 10 ? `0${this.mm}` : this.mm
+                        this.seccs = this.countDownSecs < 10 ? `0${this.countDownSecs}` : this
+                            .countDownSecs
+                        this.tt = `${this.hrrs}:${this.minns}:${this.seccs}`
+                        $timer.html(this.tt)
+                        $countDownField.attr("data-countdown", this.countDownTimer)
+                        $countDownField.attr("data-currtimer", this.tt)
+                        $countDownField.attr("data-minutes", this.mm)
+                        $countDownField.attr("data-hours", this.hh)
+                        if (this.countDownSecs > 0) {
+                            this.count++
+                            this.progressed = this.count / ($countDownFieldVal * 60) * 100
+                            $fillBG.width(`+=${this.progressed}%`)
+                            this.countDownSecs--
+                        } else if (this.mm > 0) {
+                            this.countDownSecs = 59
+                            this.mm--
+                        } else if (this.hh > 0) {
+                            this.mm = 59
+                            this.hh--
+                        } else {
+                            console.log("done")
+                            this.countDownID = $countDownField.attr("data-countdown")
 
-                    this.minutes = totalMins
-                    this.hrs = Math.floor(this.minutes / 60)
-                    this.mins = Math.floor(this.minutes % 60) - 1
-                    // this.hrs = this.hrs > 9 ? hrs : `0${this.hrs}`
-                    // this.mins = this.mins > 9 ? this.mins : `0${this.mins}`
-                    this.secs = 59;
+                            clearInterval(this.countDownTimer)
+                            this.element.parent().parent().siblings(".invoice__btn").removeClass(
+                                "disabled")
+                            $fillBG.css({
+                                animation: "invBlicking 1s ease-in-out"
+                            })
+                            // changeBtn("جديد", "var(--color-base-1)", "var(--color-blue)",
+                            // $stopBtn)
+                            $stopBtn.html("جديد")
+                            $stopBtn.css({
+                                background: "var(--color-blue)",
+                                color: "var(--color-base-1)",
+                            })
 
-                    this.countDownSecs = this.secs > 9 ? this.secs : `0${this.secs}`
-                    this.countDownMins = this.mins > 9 ? this.mins : `0${this.mins}`
-                    this.countDownHrs = this.hrs > 9 ? this.hrs : `0${this.hrs}`
-                    this.startingAt = `${this.hrs}:${this.mins}:00`
-
-                    if (this.countDownSecs > 0) {
-                        this.countDownSecs--;
-
-                    } else if (this.countDownMins > 0) {
-                        this.countDownSecs = 59;
-                        this.countDownMins--;
-                    } else {
-                        this.countDownMins = 59;
-                        this.countDownHrs--;
-                    }
-                    this.t = `${this.countDownHrs}:${this.countDownMins}:${this.countDownSecs}`
-                    $timer.html(this.t)
-
-                    console.log(this.t)
-                    this.element.parent().parent().siblings(".time__tracker").find(".timer").html(this
-                        .t)
-                    // this.element.parent().parent().siblings(".time__tracker").find(".timer").attr(
-                    //     "data-timer_start", this.startingAt)
-                    // this.element.parent().parent().siblings(".time__tracker").find(".timer").attr(
-                    //     "data-hrs", this.hrs)
-                    // this.element.parent().parent().siblings(".time__tracker").find(".timer").attr(
-                    //     "data-mins", this.mins)
-                    // this.element.attr("data-seconds", this.s)
-                    // this.element.attr("data-minutes", this.m)
-                    // this.element.attr("data-hours", this.h)
-
+                            this.totalH = Math.floor($countDownFieldVal / 60)
+                            this.totalM = Math.floor($countDownFieldVal % 60) - 1
+                            this.totalH = this.hh < 10 ? `0${this.hh}` : this.hh
+                            this.totalM = this.mm < 10 ? `0${this.mm}` : this.mm
+                            $invBtn.html(`${this.totalH}:${this.totalM}`)
+                            // $this.addClass("disabled")   
+                        }
+                    }, 1000)
                 }
                 start() {
 
@@ -983,81 +997,82 @@
                     undefined || $countDownFieldVal == " ") {
                     startFunction($this, $invBtn, $devCard, $stopBtn, runTimer, $countDownField)
                 } else {
+                    runTimer.countDown($countDownFieldVal, $countDownField, $fillBG, $stopBtn, $invBtn,
+                        $timer)
+                    // let countDownSecs = 59
+                    // let hh = Math.floor($countDownFieldVal / 60)
+                    // let mm = Math.floor($countDownFieldVal % 60) - 1
+                    // let count = 1
+                    // countDownTimer = setInterval(() => {
+                    //     console.log(countDownTimer)
+                    //     let hrrs = hh < 10 ? `0${hh}` : hh
+                    //     let minns = mm < 10 ? `0${mm}` : mm
+                    //     let seccs = countDownSecs < 10 ? `0${countDownSecs}` : countDownSecs
+                    //     let tt = `${hrrs}:${minns}:${seccs}`
+                    //     $timer.html(tt)
+                    //     $countDownField.attr("data-countdown", countDownTimer)
+                    //     $countDownField.attr("data-currtimer", tt)
+                    //     $countDownField.attr("data-minutes", mm)
+                    //     $countDownField.attr("data-hours", hh)
+                    //     if (countDownSecs > 0) {
+                    //         count++
+                    //         let progressed = count / ($countDownFieldVal * 60) * 100
+                    //         $fillBG.width(`+=${progressed}%`)
+                    //         countDownSecs--
+                    //     } else if (mm > 0) {
+                    //         countDownSecs = 59
+                    //         mm--
+                    //     } else if (hh > 0) {
+                    //         mm = 59
+                    //         hh--
+                    //     } else {
+                    //         console.log("done")
+                    //         let countDownID = $countDownField.attr("data-countdown")
 
-                    let countDownSecs = 59
-                    let hh = Math.floor($countDownFieldVal / 60)
-                    let mm = Math.floor($countDownFieldVal % 60) - 1
-                    let count = 1
-                    countDownTimer = setInterval(() => {
+                    //         clearInterval(countDownTimer)
+                    //         $this.parent().parent().siblings(".invoice__btn").removeClass(
+                    //             "disabled")
+                    //         $fillBG.css({
+                    //             animation: "invBlicking 1s ease-in-out"
+                    //         })
+                    //         // changeBtn("جديد", "var(--color-base-1)", "var(--color-blue)",
+                    //         // $stopBtn)
+                    //         $stopBtn.html("جديد")
+                    //         $stopBtn.css({
+                    //             background: "var(--color-blue)",
+                    //             color: "var(--color-base-1)",
+                    //         })
 
-                        let hrrs = hh < 10 ? `0${hh}` : hh
-                        let minns = mm < 10 ? `0${mm}` : mm
-                        let seccs = countDownSecs < 10 ? `0${countDownSecs}` : countDownSecs
-                        let tt = `${hrrs}:${minns}:${seccs}`
-                        $timer.html(tt)
-                        $countDownField.attr("data-countdown", countDownTimer)
-                        $countDownField.attr("data-currtimer", tt)
-                        $countDownField.attr("data-minutes", mm)
-                        $countDownField.attr("data-hours", hh)
-                        if (countDownSecs > 0) {
-                            count++
-                            let progressed = count / ($countDownFieldVal * 60) * 100
-                            $fillBG.width(`+=${progressed}%`)
-                            countDownSecs--
-                        } else if (mm > 0) {
-                            countDownSecs = 59
-                            mm--
-                        } else if (hh > 0) {
-                            mm = 59
-                            hh--
-                        } else {
-                            console.log("done")
-                            let countDownID = $countDownField.attr("data-countdown")
-
-                            clearInterval(countDownTimer)
-                            $this.parent().parent().siblings(".invoice__btn").removeClass(
-                                "disabled")
-                            $fillBG.css({
-                                animation: "invBlicking 1s ease-in-out"
-                            })
-                            // changeBtn("جديد", "var(--color-base-1)", "var(--color-blue)",
-                            // $stopBtn)
-                            $stopBtn.html("جديد")
-                            $stopBtn.css({
-                                background: "var(--color-blue)",
-                                color: "var(--color-base-1)",
-                            })
-
-                            let totalH = Math.floor($countDownFieldVal / 60)
-                            let totalM = Math.floor($countDownFieldVal % 60) - 1
-                            totalH = hh < 10 ? `0${hh}` : hh
-                            totalM = mm < 10 ? `0${mm}` : mm
-                            $invBtn.html(`${totalH}:${totalM}`)
-                        }
-
-                        // runTimer.countDown($countDownFieldVal, $timer)
-
-                        // if (countDownSecs > 0) {
-                        //     countDownSecs--;
-                        //     console.log(countDownSecs)
-
-                        // } else if (countDownMins > 0) {
-                        //     countDownSecs = 59;
-                        //     countDownMins--;
-                        // } else {
-                        //     countDownMins = 59;
-                        //     countDownHrs--;
-                        // }
-                        // t = `${countDownHrs}:${countDownMins}:${countDownSecs}`
-                        // $timer.html(t)
-
-                        // console.log(t)
-
-                    }, 1000)
-                    $this.addClass("disabled")
-
-
+                    //         let totalH = Math.floor($countDownFieldVal / 60)
+                    //         let totalM = Math.floor($countDownFieldVal % 60) - 1
+                    //         totalH = hh < 10 ? `0${hh}` : hh
+                    //         totalM = mm < 10 ? `0${mm}` : mm
+                    //         $invBtn.html(`${totalH}:${totalM}`)
                 }
+
+                // runTimer.countDown($countDownFieldVal, $timer)
+
+                // if (countDownSecs > 0) {
+                //     countDownSecs--;
+                //     console.log(countDownSecs)
+
+                // } else if (countDownMins > 0) {
+                //     countDownSecs = 59;
+                //     countDownMins--;
+                // } else {
+                //     countDownMins = 59;
+                //     countDownHrs--;
+                // }
+                // t = `${countDownHrs}:${countDownMins}:${countDownSecs}`
+                // $timer.html(t)
+
+                // console.log(t)
+
+                // }, 1000)
+                // $this.addClass("disabled")
+
+
+                //     }
             })
 
 
