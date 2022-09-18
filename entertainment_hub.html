@@ -321,6 +321,7 @@
         transition: .2s;
         overflow: hidden;
         position: relative;
+        border-radius: var(--btn-border-radius);
     }
 
     .invoice__btn>button>a:hover {
@@ -330,8 +331,9 @@
 
 
     .create__invoice_btn {
-    z-index: 2;
+        z-index: 2;
     }
+
     .create__invoice_btn::after {
         /* content: "";
         width: 5px;
@@ -474,13 +476,36 @@
             transform: rotate(450deg);
         }
     }
-    .fill__pct{
+
+    @keyframes invBlicking {
+        0% {
+            opacity: 0;
+        }
+
+        35% {
+            opacity: 1;
+        }
+
+        60% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    .fill__pct {
         position: absolute;
         background: var(--color-green);
         height: 100%;
-        width:0%;
+        width: 0%;
         z-index: -1;
-transition: var(--trans-1);
+        transition: var(--trans-1);
+    }
+
+    .stop__btn {
+        /* mix-blend-mode: luminosity; */
     }
 </style>
 
@@ -628,7 +653,7 @@ transition: var(--trans-1);
                     <div
                         class="action__btn d-flex justify-content-around align-items-center text-center flex-column col-3 ">
                         <button class="start__btn bttn start floating" type="button" data-serial="1">ابدأ</button>
-                        <button class="stop__btn bttn stop floating" type="button">إنهاء</button>
+                        <button class="stop__btn bttn stop" type="button" disabled>إنهاء</button>
                     </div>
 
                     <div class="input__container"><input class="input__field" type="number" placeholder="أدخل الوقت" />
@@ -917,7 +942,7 @@ transition: var(--trans-1);
 
                     $invBtn.attr("disabled", "disabled")
                     changeBtn("إيقاف", "var(--color-base-1)", "var(--color-turquoise)")
-                    $devCard.addClass("playing")
+                    // $devCard.addClass("playing")
                     startTime = new Date().toLocaleTimeString().slice(0, -3)
                     $this.attr("data-start_time", startTime)
 
@@ -946,9 +971,13 @@ transition: var(--trans-1);
                 let $countDownField = $this.parent().siblings(".input__container").find(".input__field")
                 let $countDownFieldVal = $this.parent().siblings(".input__container").find(
                     ".input__field").val()
+                $devCard.addClass("playing")
 
                 let runTimer = new StartButton()
                 $countDownField.attr("disabled", "disabled")
+                $stopBtn.removeAttr("disabled").addClass("floating").css({
+                    mixBlendMode: "unset"
+                })
 
                 if ($countDownFieldVal == "" || $countDownFieldVal == "0" || $countDownFieldVal ==
                     undefined || $countDownFieldVal == " ") {
@@ -960,27 +989,50 @@ transition: var(--trans-1);
                     let mm = Math.floor($countDownFieldVal % 60) - 1
                     let count = 1
                     countDownTimer = setInterval(() => {
-               
+
                         let hrrs = hh < 10 ? `0${hh}` : hh
                         let minns = mm < 10 ? `0${mm}` : mm
-                        let seccs = countDownSecs < 10 ? `0${countDownSecs}`: countDownSecs
+                        let seccs = countDownSecs < 10 ? `0${countDownSecs}` : countDownSecs
                         let tt = `${hrrs}:${minns}:${seccs}`
                         $timer.html(tt)
-                        if(countDownSecs>0){
+                        $countDownField.attr("data-countdown", countDownTimer)
+                        $countDownField.attr("data-currtimer", tt)
+                        $countDownField.attr("data-minutes", mm)
+                        $countDownField.attr("data-hours", hh)
+                        if (countDownSecs > 0) {
                             count++
-                            let progressed = count/($countDownFieldVal*60)*100
-                            console.log(progressed)
+                            let progressed = count / ($countDownFieldVal * 60) * 100
                             $fillBG.width(`+=${progressed}%`)
                             countDownSecs--
-                        }else if(mm >0){
+                        } else if (mm > 0) {
                             countDownSecs = 59
                             mm--
-                        }else if(hh>0){
+                        } else if (hh > 0) {
                             mm = 59
                             hh--
-                        }else{
-                            clearInterval(countDownTimer)
+                        } else {
                             console.log("done")
+                            let countDownID = $countDownField.attr("data-countdown")
+
+                            clearInterval(countDownTimer)
+                            $this.parent().parent().siblings(".invoice__btn").removeClass(
+                                "disabled")
+                            $fillBG.css({
+                                animation: "invBlicking 1s ease-in-out"
+                            })
+                            // changeBtn("جديد", "var(--color-base-1)", "var(--color-blue)",
+                            // $stopBtn)
+                            $stopBtn.html("جديد")
+                            $stopBtn.css({
+                                background: "var(--color-blue)",
+                                color: "var(--color-base-1)",
+                            })
+
+                            let totalH = Math.floor($countDownFieldVal / 60)
+                            let totalM = Math.floor($countDownFieldVal % 60) - 1
+                            totalH = hh < 10 ? `0${hh}` : hh
+                            totalM = mm < 10 ? `0${mm}` : mm
+                            $invBtn.html(`${totalH}:${totalM}`)
                         }
 
                         // runTimer.countDown($countDownFieldVal, $timer)
@@ -1019,7 +1071,7 @@ transition: var(--trans-1);
 
 
             function stopFunction($this, $invBtn, $startBtn, $startT, $endT, stopTimer, $countDownField,
-                $timer) {
+                $timer, $fillBG) {
 
                 if ($this.html() == "إنهاء") {
                     let intervID = $startBtn.attr("data-interval")
@@ -1040,7 +1092,8 @@ transition: var(--trans-1);
 
                 } else {
 
-
+                    $this.attr("disabled", "disabled").removeClass("floating")
+                    // .css({mixBlendMode: "unset"})
                     changeBtn("إنهاء", "var(--color-base-1)", "var(--color-red)")
                     $countDownField.removeAttr("disabled")
                     $startBtn.removeAttr("disabled").addClass("floating")
@@ -1054,6 +1107,48 @@ transition: var(--trans-1);
                     $countDownField.val("")
                     $invBtn.addClass("disabled")
                     // $(".start__btn").attr("disabled")
+                    $fillBG.width("0%")
+                }
+
+            }
+
+            function stopFunction2($this, $invBtn, $startBtn,
+                $timer, $fillBG, $countDownField, $countDownFieldVal) {
+
+                if ($this.html() == "إنهاء") {
+                    let countDownID = $countDownField.attr("data-countdown")
+                    console.log($countDownField, countDownID)
+                    clearInterval(countDownID)
+
+
+                    $invBtn.removeClass("disabled")
+                    changeBtn("جديد", "var(--color-base-1)", "var(--color-blue)")
+                    let hh = +$countDownField.attr("data-hours")
+                    let mm = +$countDownField.attr("data-minutes")
+                    console.log(hh, mm)
+                    let totalH = (Math.floor($countDownFieldVal / 60)) - hh
+                    let totalM = (Math.floor($countDownFieldVal % 60) - 1) - mm
+                    totalH = totalH < 10 ? `0${hh}` : hh
+                    totalM = totalM < 10 ? `0${mm}` : mm
+                    console.log(totalH, totalM)
+                    $invBtn.html(`${totalH}:${totalM}:00`)
+                } else {
+                    $this.attr("disabled", "disabled").removeClass("floating")
+                    // .css({mixBlendMode: "unset"})
+                    $countDownField.removeAttr("disabled")
+                    $countDownField.val("")
+
+                    changeBtn("إنهاء", "var(--color-base-1)", "var(--color-red)")
+                    $countDownField.removeAttr("disabled")
+                    $startBtn.removeAttr("disabled").addClass("floating")
+                    $timer.html(`00:00:00`)
+                    $invBtn.html(`00:00:00`)
+
+                    $startBtn.removeClass("disabled")
+                    $countDownField.val("")
+                    $this.parent().parent().siblings(".invoice__btn").find(
+                        ".create__invoice_btn").attr("disabled", "disabled")
+                    $fillBG.width("0%")
                 }
 
             }
@@ -1068,10 +1163,12 @@ transition: var(--trans-1);
                 let $endT = $this.parent().parent().siblings(".time__tracker").find(".the__end")
                 let $invBtn = $this.parent().parent().siblings(".invoice__btn").find(
                     ".tracked__time")
-                let $countDownField = $this.parent().siblings(".input__container").find(
-                    ".input__field")
+                let $countDownField = $this.parent().siblings(".input__container").find(".input__field")
                 let $countDownFieldVal = $this.parent().siblings(".input__container").find(
                     ".input__field").val()
+                let $fillBG = $this.parent().parent().siblings(".invoice__btn").find(".fill__pct")
+
+
 
                 $startBtn.html("ابدأ")
                 $startBtn.css({
@@ -1083,12 +1180,19 @@ transition: var(--trans-1);
                 $this.attr("data-end_time", endTime)
 
 
-                let stopTimer = new StopButton()
-                // stopTimer.stop($this, $invBtn, $startBtn, $startT, $endT, stopTimer,
-                //     $countDownField)
-                stopFunction($this, $invBtn, $startBtn, $startT, $endT, stopTimer, $countDownField,
-                    $timer)
+                if ($countDownFieldVal == "" || $countDownFieldVal == "0" || $countDownFieldVal ==
+                    undefined || $countDownFieldVal == " ") {
+                    let stopTimer = new StopButton()
+                    // stopTimer.stop($this, $invBtn, $startBtn, $startT, $endT, stopTimer,
+                    //     $countDownField)
+                    stopFunction($this, $invBtn, $startBtn, $startT, $endT, stopTimer, $countDownField,
+                        $timer, $fillBG)
+                } else {
+                    stopFunction2($this, $invBtn, $startBtn,
+                        $timer, $fillBG, $countDownField, $countDownFieldVal)
 
+
+                }
             })
 
 
