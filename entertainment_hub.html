@@ -63,6 +63,7 @@
         direction: rtl;
         background-color: #fff;
         color: var(--color-base-2);
+        overflow-x: hidden;
         /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important; */
 
 
@@ -695,375 +696,385 @@
     <script>
         $(document).ready(() => {
 
-            function allLogic(){
-            function changeBtn(txt, color, bckColor, selector = $this) {
-                $this.html(txt)
-                $this.css({
-                    color: color,
-                    background: bckColor
-                })
-            }
-
-
-
-            class StartButton {
-
-                constructor() {
-                    this.element = $($this)
-                    this.s = 0;
-                    this.m = 0;
-                    this.h = 0;
-
+            function allLogic() {
+                function changeBtn(txt, color, bckColor, selector = $this) {
+                    $this.html(txt)
+                    $this.css({
+                        color: color,
+                        background: bckColor
+                    })
                 }
 
-                startTimer() {
 
-                    if (this.s < 59) {
-                        this.s++;
-                    } else if (this.m < 59) {
+
+                class StartButton {
+
+                    constructor() {
+                        this.element = $($this)
                         this.s = 0;
-                        this.m++;
-                    } else {
-                        this.h++;
+                        this.m = 0;
+                        this.h = 0;
+
                     }
 
-                    this.ss = this.s < 10 ? `0${this.s}` : this.s
-                    this.mm = this.m < 10 ? `0${this.m}` : this.m
-                    this.hh = this.h < 10 ? `0${this.h}` : this.h
-                    this.t = `${this.hh}:${this.mm}:${this.ss}`
-                    // console.log(this.t)
+                    startTimer() {
 
-                    this.element.parent().parent().siblings(".time__tracker").find(".timer").html(this
-                        .t)
-                    this.element.siblings(".stop__btn").attr("data-duration", this.t)
-                    this.element.attr("data-seconds", this.s)
-                    this.element.attr("data-minutes", this.m)
-                    this.element.attr("data-hours", this.h)
-
-                }
-                resumeTimer(secs, mins, hrs) {
-
-                    this.s = secs
-                    this.m = mins
-                    this.h = hrs
-                    if (this.s < 59) {
-                        this.s++;
-                    } else if (this.m < 59) {
-                        this.s = 0;
-                        this.m++;
-                    } else {
-                        this.h++;
-                    }
-
-                    this.ss = this.s < 10 ? `0${this.s}` : this.s
-                    this.mm = this.m < 10 ? `0${this.m}` : this.m
-                    this.hh = this.h < 10 ? `0${this.h}` : this.h
-                    this.t = `${this.hh}:${this.mm}:${this.ss}`
-                    // console.log(this.t)
-
-                    this.element.parent().parent().siblings(".time__tracker").find(".timer").html(this
-                        .t)
-                    this.element.siblings(".stop__btn").attr("data-duration", this.t)
-                    this.element.attr("data-seconds", this.ss)
-                    this.element.attr("data-minutes", this.mm)
-                    this.element.attr("data-hours", this.hh)
-
-                }
-                countDown($countDownFieldVal, $countDownField, $fillBG, $stopBtn, $invBtn, $timer) {
-                    this.countDownSecs = 59
-                    this.timerH = Math.floor($countDownFieldVal / 60)
-                    this.timerM = Math.floor($countDownFieldVal % 60) - 1
-                    this.count = 1
-                    this.countDownTimer = setInterval(() => {
-                        console.log("fromCountDown Start: ",this.countDownTimer)
-                        this.hrrs = this.timerH < 10 ? `0${this.timerH}` : this.timerH
-                        this.minns = this.timerM < 10 ? `0${this.timerM}` : this.timerM
-                        this.seccs = this.countDownSecs < 10 ? `0${this.countDownSecs}` : this
-                            .countDownSecs
-                        this.tt = `${this.hrrs}:${this.minns}:${this.seccs}`
-                        $timer.html(this.tt)
-                        $countDownField.attr("data-countdown", this.countDownTimer)
-                        $countDownField.attr("data-currtimer", this.tt)
-                        $countDownField.attr("data-minutes", this.timerM)
-                        $countDownField.attr("data-hours", this.timerH)
-                        if (this.countDownSecs > 0) {
-                            this.count++
-                            this.progressed = this.count / ($countDownFieldVal * 60) * 100
-                            $fillBG.width(`+=${this.progressed}%`)
-                            this.countDownSecs--
-                        } else if (this.timerM > 0) {
-                            this.countDownSecs = 59
-                            this.timerM--
-                        } else if (this.timerH > 0) {
-                            this.timerM = 59
-                            this.timerH--
+                        if (this.s < 59) {
+                            this.s++;
+                        } else if (this.m < 59) {
+                            this.s = 0;
+                            this.m++;
                         } else {
-                            console.log("CountDown: done")
-                            this.countDownID = $countDownField.attr("data-countdown")
-
-                            clearInterval(this.countDownTimer)
-                        console.log("fromCountDown Clear: ",this.countDownTimer)
-
-                            this.element.parent().parent().siblings(".invoice__btn").removeClass(
-                                "disabled")
-                            $fillBG.css({
-                                animation: "invBlicking 1s ease-in-out"
-                            })
-                            // changeBtn("جديد", "var(--color-base-1)", "var(--color-blue)",
-                            // $stopBtn)
-                            $stopBtn.html("جديد")
-                            $stopBtn.css({
-                                background: "var(--color-blue)",
-                                color: "var(--color-base-1)",
-                            })
-
-                            this.totalH = Math.floor($countDownFieldVal / 60)
-                            this.totalM = Math.floor($countDownFieldVal % 60) - 1
-                            this.totalH = this.timerH < 10 ? `0${this.timerH}` : this.timerH
-                            this.totalM = this.timerM < 10 ? `0${this.timerM}` : this.timerM
-                            $invBtn.html(`${this.totalH}:${this.totalM}`)
-                            // $this.addClass("disabled")   
+                            this.h++;
                         }
-                    }, 1000)
+
+                        this.ss = this.s < 10 ? `0${this.s}` : this.s
+                        this.mm = this.m < 10 ? `0${this.m}` : this.m
+                        this.hh = this.h < 10 ? `0${this.h}` : this.h
+                        this.t = `${this.hh}:${this.mm}:${this.ss}`
+                        // console.log(this.t)
+
+                        this.element.parent().parent().siblings(".time__tracker").find(".timer").html(this
+                            .t)
+                        this.element.siblings(".stop__btn").attr("data-duration", this.t)
+                        this.element.attr("data-seconds", this.s)
+                        this.element.attr("data-minutes", this.m)
+                        this.element.attr("data-hours", this.h)
+
+                    }
+                    resumeTimer(secs, mins, hrs) {
+
+                        this.s = secs
+                        this.m = mins
+                        this.h = hrs
+                        if (this.s < 59) {
+                            this.s++;
+                        } else if (this.m < 59) {
+                            this.s = 0;
+                            this.m++;
+                        } else {
+                            this.h++;
+                        }
+
+                        this.ss = this.s < 10 ? `0${this.s}` : this.s
+                        this.mm = this.m < 10 ? `0${this.m}` : this.m
+                        this.hh = this.h < 10 ? `0${this.h}` : this.h
+                        this.t = `${this.hh}:${this.mm}:${this.ss}`
+                        // console.log(this.t)
+
+                        this.element.parent().parent().siblings(".time__tracker").find(".timer").html(this
+                            .t)
+                        this.element.siblings(".stop__btn").attr("data-duration", this.t)
+                        this.element.attr("data-seconds", this.ss)
+                        this.element.attr("data-minutes", this.mm)
+                        this.element.attr("data-hours", this.hh)
+
+                    }
+                    countDown($countDownFieldVal, $countDownField, $fillBG, $stopBtn, $invBtn, $timer) {
+                        this.countDownSecs = 59
+                        this.timerH = Math.floor($countDownFieldVal / 60)
+                        this.timerM = Math.floor($countDownFieldVal % 60) - 1
+                        this.count = 1
+                        this.countDownTimer = setInterval(() => {
+                            console.log("fromCountDown Start: ", this.countDownTimer)
+                            this.hrrs = this.timerH < 10 ? `0${this.timerH}` : this.timerH
+                            this.minns = this.timerM < 10 ? `0${this.timerM}` : this.timerM
+                            this.seccs = this.countDownSecs < 10 ? `0${this.countDownSecs}` : this
+                                .countDownSecs
+                            this.tt = `${this.hrrs}:${this.minns}:${this.seccs}`
+                            $timer.html(this.tt)
+                            $countDownField.attr("data-countdown", this.countDownTimer)
+                            $countDownField.attr("data-currtimer", this.tt)
+                            $countDownField.attr("data-minutes", this.timerM)
+                            $countDownField.attr("data-hours", this.timerH)
+                            if (this.countDownSecs > 0) {
+                                this.count++
+                                this.progressed = this.count / ($countDownFieldVal * 60) * 100
+                                $fillBG.width(`+=${this.progressed}%`)
+                                this.countDownSecs--
+                            } else if (this.timerM > 0) {
+                                this.countDownSecs = 59
+                                this.timerM--
+                            } else if (this.timerH > 0) {
+                                this.timerM = 59
+                                this.timerH--
+                            } else {
+                                console.log("CountDown: done")
+                                this.countDownID = $countDownField.attr("data-countdown")
+
+                                clearInterval(this.countDownTimer)
+                                console.log("fromCountDown Clear: ", this.countDownTimer)
+
+                                this.element.parent().parent().siblings(".invoice__btn")
+                                    .removeClass(
+                                        "disabled")
+                                $fillBG.css({
+                                    animation: "invBlicking 1s ease-in-out"
+                                })
+                                // changeBtn("جديد", "var(--color-base-1)", "var(--color-blue)",
+                                // $stopBtn)
+                                $stopBtn.html("جديد")
+                                $stopBtn.css({
+                                    background: "var(--color-blue)",
+                                    color: "var(--color-base-1)",
+                                })
+
+                                this.totalH = Math.floor($countDownFieldVal / 60)
+                                this.totalM = Math.floor($countDownFieldVal % 60) - 1
+                                this.totalH = this.timerH < 10 ? `0${this.timerH}` : this.timerH
+                                this.totalM = this.timerM < 10 ? `0${this.timerM}` : this.timerM
+                                $invBtn.html(`${this.totalH}:${this.totalM}`)
+                                // $this.addClass("disabled")   
+                            }
+                        }, 1000)
+                    }
+                    start() {
+
+                        this.interval = setInterval(() => {
+                            console.log("fromOpenTimer Start: ", this.interval)
+
+                            this.startTimer()
+                        }, 1000)
+                        this.element.attr("data-interval", this.interval)
+                        // console.log("started")
+                        // }
+                    }
+                    pause(interval) {
+
+                        clearInterval(interval)
+                        console.log("fromOpenTimer Pause: ", interval)
+
+                        // console.log("paused")
+                        // }
+                    }
+                    resume() {
+
+
+                        let secs = +this.element.attr("data-seconds")
+                        let mins = +this.element.attr("data-minutes")
+                        let hrs = +this.element.attr("data-hours")
+                        this.interval = setInterval(() => {
+                            console.log("fromOpenTimer Resume: ", this.interval)
+
+                            secs += 1
+                            this.resumeTimer(secs, mins, hrs)
+                        }, 1000)
+                        this.element.attr("data-interval", this.interval)
+                        // console.log("resumed")
+                        // }
+                    }
                 }
-                start() {
 
-                    this.interval = setInterval(() => {
-                        console.log("fromOpenTimer Start: ",this.interval)
+                class StopButton {
+                    constructor() {
+                        this.element = $(this)
+                    }
 
-                        this.startTimer()
-                    }, 1000)
-                    this.element.attr("data-interval", this.interval)
-                    // console.log("started")
-                    // }
+                    stop(interval) {
+
+                        clearInterval(interval)
+                        console.log("fromOpenTimer Stop: ", interval)
+
+                    }
+                    reset() {
+
+                        // console.log("reset")
+                    }
                 }
-                pause(interval) {
 
-                    clearInterval(interval)
-                    console.log("fromOpenTimer Pause: ",interval)
 
-                    // console.log("paused")
-                    // }
+                //==================================
+                function startFunction($this, $invBtn, $devCard, $stopBtn, runTimer, $countDownField) {
+
+                    if ($this.html() == "ابدأ") {
+                        runTimer.start()
+
+                        $this.parent().parent().siblings(".invoice__btn").attr("disabled", "disabled")
+                        changeBtn("إيقاف", "var(--color-base-1)", "var(--color-turquoise)")
+                        // $devCard.addClass("playing")
+                        startTime = new Date().toLocaleTimeString().slice(0, -3)
+                        $this.attr("data-start_time", startTime)
+
+                    } else if ($this.html() == "إيقاف") {
+                        let intervID = $this.attr("data-interval")
+                        console.log("fromOpenTimer actPause: ", intervID)
+
+                        runTimer.pause(intervID)
+
+                        let spentTime = $stopBtn.attr("data-duration")
+                        changeBtn("استكمال", "var(--color-base-1)", "var(--color-green)")
+
+                    } else {
+                        runTimer.resume()
+                        changeBtn("إيقاف", "var(--color-base-1)", "var(--color-turquoise)")
+                    }
                 }
-                resume() {
 
+                $(".start__btn").click(function () {
+                    $this = $(this)
+                    $stopBtn = $this.siblings(".stop__btn")
+                    let $devCard = $this.parent().parent().siblings(".device__card")
+                    let $timer = $this.parent().parent().siblings(".time__tracker").find(".timer")
+                    let $startT = $this.parent().parent().siblings(".time__tracker").find(".the__start")
+                    let $endT = $this.parent().parent().siblings(".time__tracker").find(".the__end")
+                    let $invBtn = $this.parent().parent().siblings(".invoice__btn").find(
+                        ".tracked__time")
 
-                    let secs = +this.element.attr("data-seconds")
-                    let mins = +this.element.attr("data-minutes")
-                    let hrs = +this.element.attr("data-hours")
-                    this.interval = setInterval(() => {
-                        console.log("fromOpenTimer Resume: ",this.interval)
+                    let $fillBG = $this.parent().parent().siblings(".invoice__btn").find(".fill__pct")
+                    let $countDownField = $this.parent().siblings(".input__container").find(
+                        ".input__field")
+                    let $countDownFieldVal = $this.parent().siblings(".input__container").find(
+                        ".input__field").val()
+                    $devCard.addClass("playing")
 
-                        secs += 1
-                        this.resumeTimer(secs, mins, hrs)
-                    }, 1000)
-                    this.element.attr("data-interval", this.interval)
-                    // console.log("resumed")
-                    // }
-                }
-            }
+                    let runTimer = new StartButton()
+                    $countDownField.attr("disabled", "disabled")
+                    $stopBtn.removeAttr("disabled").addClass("floating").css({
+                        mixBlendMode: "unset"
+                    })
 
-            class StopButton {
-                constructor() {
-                    this.element = $(this)
-                }
-                
-                stop(interval) {
-                    
-                    clearInterval(interval)
-                    console.log("fromOpenTimer Stop: ",interval)
-
-                }
-                reset() {
-
-                    // console.log("reset")
-                }
-            }
-
-
-            //==================================
-            function startFunction($this, $invBtn, $devCard, $stopBtn, runTimer, $countDownField) {
-
-                if ($this.html() == "ابدأ") {
-                    runTimer.start()
-
-                    $invBtn.attr("disabled", "disabled")
-                    changeBtn("إيقاف", "var(--color-base-1)", "var(--color-turquoise)")
-                    // $devCard.addClass("playing")
-                    startTime = new Date().toLocaleTimeString().slice(0, -3)
-                    $this.attr("data-start_time", startTime)
-
-                } else if ($this.html() == "إيقاف") {
-                    let intervID = $this.attr("data-interval")
-                    console.log("fromOpenTimer actPause: ",intervID)
-                    
-                    runTimer.pause(intervID)
-
-                    let spentTime = $stopBtn.attr("data-duration")
-                    changeBtn("استكمال", "var(--color-base-1)", "var(--color-green)")
-
-                } else {
-                    runTimer.resume()
-                    changeBtn("إيقاف", "var(--color-base-1)", "var(--color-turquoise)")
-                }
-            }
-
-            $(".start__btn").click(function () {
-                $this = $(this)
-                $stopBtn = $this.siblings(".stop__btn")
-                let $devCard = $this.parent().parent().siblings(".device__card")
-                let $timer = $this.parent().parent().siblings(".time__tracker").find(".timer")
-                let $startT = $this.parent().parent().siblings(".time__tracker").find(".the__start")
-                let $endT = $this.parent().parent().siblings(".time__tracker").find(".the__end")
-                let $invBtn = $this.parent().parent().siblings(".invoice__btn").find(".tracked__time")
-                let $fillBG = $this.parent().parent().siblings(".invoice__btn").find(".fill__pct")
-                let $countDownField = $this.parent().siblings(".input__container").find(".input__field")
-                let $countDownFieldVal = $this.parent().siblings(".input__container").find(
-                    ".input__field").val()
-                $devCard.addClass("playing")
-
-                let runTimer = new StartButton()
-                $countDownField.attr("disabled", "disabled")
-                $stopBtn.removeAttr("disabled").addClass("floating").css({
-                    mixBlendMode: "unset"
+                    if ($countDownFieldVal == "" || $countDownFieldVal == "0" || $countDownFieldVal ==
+                        undefined || $countDownFieldVal == " ") {
+                        startFunction($this, $invBtn, $devCard, $stopBtn, runTimer, $countDownField)
+                    } else {
+                        runTimer.countDown($countDownFieldVal, $countDownField, $fillBG, $stopBtn,
+                            $invBtn,
+                            $timer)
+                    }
                 })
 
-                if ($countDownFieldVal == "" || $countDownFieldVal == "0" || $countDownFieldVal ==
-                    undefined || $countDownFieldVal == " ") {
-                    startFunction($this, $invBtn, $devCard, $stopBtn, runTimer, $countDownField)
-                } else {
-                    runTimer.countDown($countDownFieldVal, $countDownField, $fillBG, $stopBtn, $invBtn,
-                        $timer)
-                }
-            })
+                function stopFunction($this, $invBtn, $startBtn, $startT, $endT, stopTimer, $countDownField,
+                    $timer, $fillBG) {
 
-            function stopFunction($this, $invBtn, $startBtn, $startT, $endT, stopTimer, $countDownField,
-                $timer, $fillBG) {
+                    if ($this.html() == "إنهاء") {
+                        let intervID = $startBtn.attr("data-interval")
+                        console.log("fromOpenTimer actStop: ", intervID)
 
-                if ($this.html() == "إنهاء") {
-                    let intervID = $startBtn.attr("data-interval")
-                    console.log("fromOpenTimer actStop: ",intervID)
+                        stopTimer.stop(intervID)
+                        $startBtn.attr("disabled", "disabled").removeClass("floating")
 
-                    stopTimer.stop(intervID)
-                    $startBtn.attr("disabled", "disabled").removeClass("floating")
+                        dur = $this.attr("data-duration")
+                        // dur = $this.parent().siblings(".time__tracker").find(".timer").text()
 
-                    dur = $this.attr("data-duration")
-                    // dur = $this.parent().siblings(".time__tracker").find(".timer").text()
+                        $invBtn.html(dur)
+                        $this.parent().parent().siblings(".invoice__btn").removeClass("disabled")
 
-                    $invBtn.html(dur)
-                    $invBtn.removeClass("disabled")
-                    changeBtn("جديد", "var(--color-base-1)", "var(--color-blue)")
 
-                    let theStart = $startBtn.attr("data-start_time")
-                    $startT.html(theStart).fadeIn()
-                    let theEnd = $this.attr("data-end_time")
-                    $endT.html(theEnd).fadeIn()
+                        changeBtn("جديد", "var(--color-base-1)", "var(--color-blue)")
 
-                } else {
+                        let theStart = $startBtn.attr("data-start_time")
+                        $startT.html(theStart).fadeIn()
+                        let theEnd = $this.attr("data-end_time")
+                        $endT.html(theEnd).fadeIn()
 
-                    $this.attr("disabled", "disabled").removeClass("floating")
-                    // .css({mixBlendMode: "unset"})
-                    changeBtn("إنهاء", "var(--color-base-1)", "var(--color-red)")
-                    $countDownField.removeAttr("disabled")
-                    $startBtn.removeAttr("disabled").addClass("floating")
-                    $(".the__start, .the__end").html(`00:00:00`).fadeOut()
-                    $timer.html(`00:00:00`)
-                    $invBtn.html(`00:00:00`)
-                    $startBtn.attr("data-seconds", "00")
-                    $startBtn.attr("data-minutes", "00")
-                    $startBtn.attr("data-hours", "00")
-                    $startBtn.removeClass("disabled")
-                    $countDownField.val("")
-                    $invBtn.addClass("disabled")
-                    // $(".start__btn").attr("disabled")
-                    $fillBG.width("0%")
+                    } else {
+
+                        $this.attr("disabled", "disabled").removeClass("floating")
+                        // .css({mixBlendMode: "unset"})
+                        changeBtn("إنهاء", "var(--color-base-1)", "var(--color-red)")
+                        $countDownField.removeAttr("disabled")
+                        $startBtn.removeAttr("disabled").addClass("floating")
+                        $(".the__start, .the__end").html(`00:00:00`).fadeOut()
+                        $timer.html(`00:00:00`)
+                        $invBtn.html(`00:00:00`)
+                        $startBtn.attr("data-seconds", "00")
+                        $startBtn.attr("data-minutes", "00")
+                        $startBtn.attr("data-hours", "00")
+                        $startBtn.removeClass("disabled")
+                        $countDownField.val("")
+                        $this.parent().parent().siblings(".invoice__btn").addClass("disabled")
+                        // $(".start__btn").attr("disabled")
+                        $fillBG.width("0%")
+                    }
+
                 }
 
-            }
+                function stopFunction2($this, $invBtn, $startBtn,
+                    $timer, $fillBG, $countDownField, $countDownFieldVal) {
 
-            function stopFunction2($this, $invBtn, $startBtn,
-                $timer, $fillBG, $countDownField, $countDownFieldVal) {
+                    if ($this.html() == "إنهاء") {
+                        let countDownID = $countDownField.attr("data-countdown")
+                        console.log("countDown Clear: ", countDownID)
+                        clearInterval(countDownID)
+                        $this.parent().parent().siblings(".invoice__btn").removeClass("disabled")
 
-                if ($this.html() == "إنهاء") {
-                    let countDownID = $countDownField.attr("data-countdown")
-                    console.log("countDown Clear: ", countDownID)
-                    clearInterval(countDownID)
-                    $invBtn.removeClass("disabled")
-                    changeBtn("جديد", "var(--color-base-1)", "var(--color-blue)")
-                    let hh = +$countDownField.attr("data-hours")
-                    let mm = +$countDownField.attr("data-minutes")
-                    // console.log(hh, mm)
-                    let totalH = (Math.floor($countDownFieldVal / 60)) - hh
-                    let totalM = (Math.floor($countDownFieldVal % 60) - 1) - mm
-                    totalH = totalH < 10 ? `0${hh}` : hh
-                    totalM = totalM < 10 ? `0${mm}` : mm
-                    // console.log(totalH, totalM)
-                    $invBtn.html(`${totalH}:${totalM}:00`)
-                } else {
-                    $this.attr("disabled", "disabled").removeClass("floating")
-                    // .css({mixBlendMode: "unset"})
-                    $countDownField.removeAttr("disabled")
-                    $countDownField.val("")
+                        changeBtn("جديد", "var(--color-base-1)", "var(--color-blue)")
+                        let hh = +$countDownField.attr("data-hours")
+                        let mm = +$countDownField.attr("data-minutes")
+                        // console.log(hh, mm)
+                        let totalH = (Math.floor($countDownFieldVal / 60)) - hh
+                        let totalM = (Math.floor($countDownFieldVal % 60) - 1) - mm
+                        totalH = totalH < 10 ? `0${hh}` : hh
+                        totalM = totalM < 10 ? `0${mm}` : mm
+                        // console.log(totalH, totalM)
+                        $invBtn.html(`${totalH}:${totalM}:00`)
+                    } else {
+                        $this.attr("disabled", "disabled").removeClass("floating")
+                        // .css({mixBlendMode: "unset"})
+                        $countDownField.removeAttr("disabled")
+                        $countDownField.val("")
 
-                    changeBtn("إنهاء", "var(--color-base-1)", "var(--color-red)")
-                    $countDownField.removeAttr("disabled")
-                    $startBtn.removeAttr("disabled").addClass("floating")
-                    $timer.html(`00:00:00`)
-                    $invBtn.html(`00:00:00`)
+                        changeBtn("إنهاء", "var(--color-base-1)", "var(--color-red)")
+                        $countDownField.removeAttr("disabled")
+                        $startBtn.removeAttr("disabled").addClass("floating")
+                        $timer.html(`00:00:00`)
+                        $invBtn.html(`00:00:00`)
+                        $this.parent().parent().siblings(".invoice__btn").addClass("disabled")
+                        $startBtn.removeClass("disabled")
+                        $countDownField.val("")
+                        $this.parent().parent().siblings(".invoice__btn").find(
+                            ".create__invoice_btn").attr("disabled", "disabled")
+                        $fillBG.width("0%")
+                    }
 
-                    $startBtn.removeClass("disabled")
-                    $countDownField.val("")
-                    $this.parent().parent().siblings(".invoice__btn").find(
-                        ".create__invoice_btn").attr("disabled", "disabled")
-                    $fillBG.width("0%")
                 }
 
-            }
+
+                $(".stop__btn").click(function () {
+                    $this = $(this)
+                    let $startBtn = $this.siblings(".start__btn")
+                    let $devCard = $this.parent().parent().siblings(".device__card")
+                    let $timer = $this.parent().parent().siblings(".time__tracker").find(".timer")
+                    let $startT = $this.parent().parent().siblings(".time__tracker").find(".the__start")
+                    let $endT = $this.parent().parent().siblings(".time__tracker").find(".the__end")
+                    let $invBtn = $this.parent().parent().siblings(".invoice__btn").find(
+                        ".tracked__time")
+                    let $countDownField = $this.parent().siblings(".input__container").find(
+                        ".input__field")
+                    let $countDownFieldVal = $this.parent().siblings(".input__container").find(
+                        ".input__field").val()
+                    let $fillBG = $this.parent().parent().siblings(".invoice__btn").find(".fill__pct")
 
 
-            $(".stop__btn").click(function () {
-                $this = $(this)
-                let $startBtn = $this.siblings(".start__btn")
-                let $devCard = $this.parent().parent().siblings(".device__card")
-                let $timer = $this.parent().parent().siblings(".time__tracker").find(".timer")
-                let $startT = $this.parent().parent().siblings(".time__tracker").find(".the__start")
-                let $endT = $this.parent().parent().siblings(".time__tracker").find(".the__end")
-                let $invBtn = $this.parent().parent().siblings(".invoice__btn").find(
-                    ".tracked__time")
-                let $countDownField = $this.parent().siblings(".input__container").find(".input__field")
-                let $countDownFieldVal = $this.parent().siblings(".input__container").find(
-                    ".input__field").val()
-                let $fillBG = $this.parent().parent().siblings(".invoice__btn").find(".fill__pct")
+
+                    $startBtn.html("ابدأ")
+                    $startBtn.css({
+                        background: "var(--color-base-1)",
+                        color: "var(--color-base-2)",
+                    })
+                    $devCard.removeClass("playing")
+                    endTime = new Date().toLocaleTimeString().slice(0, -3)
+                    $this.attr("data-end_time", endTime)
 
 
+                    if ($countDownFieldVal == "" || $countDownFieldVal == "0" || $countDownFieldVal ==
+                        undefined || $countDownFieldVal == " ") {
+                        let stopTimer = new StopButton()
+                        // stopTimer.stop($this, $invBtn, $startBtn, $startT, $endT, stopTimer,
+                        //     $countDownField)
+                        stopFunction($this, $invBtn, $startBtn, $startT, $endT, stopTimer,
+                            $countDownField,
+                            $timer, $fillBG)
+                    } else {
+                        stopFunction2($this, $invBtn, $startBtn,
+                            $timer, $fillBG, $countDownField, $countDownFieldVal)
 
-                $startBtn.html("ابدأ")
-                $startBtn.css({
-                    background: "var(--color-base-1)",
-                    color: "var(--color-base-2)",
+
+                    }
                 })
-                $devCard.removeClass("playing")
-                endTime = new Date().toLocaleTimeString().slice(0, -3)
-                $this.attr("data-end_time", endTime)
 
 
-                if ($countDownFieldVal == "" || $countDownFieldVal == "0" || $countDownFieldVal ==
-                    undefined || $countDownFieldVal == " ") {
-                    let stopTimer = new StopButton()
-                    // stopTimer.stop($this, $invBtn, $startBtn, $startT, $endT, stopTimer,
-                    //     $countDownField)
-                    stopFunction($this, $invBtn, $startBtn, $startT, $endT, stopTimer, $countDownField,
-                        $timer, $fillBG)
-                } else {
-                    stopFunction2($this, $invBtn, $startBtn,
-                        $timer, $fillBG, $countDownField, $countDownFieldVal)
-
-
-                }
-            })
-
-
-        }
+            }
 
             function loader() {
                 // $(".loader__container").fadeIn().css({
@@ -1074,14 +1085,14 @@
                     console.log("yes")
                     allLogic()
                 })
-                    $(".loader__icon").fadeOut()
-                    $(".loader__container").animate({
-                        height: "190px"
-                    })
-                    $(".loader__btn").animate({
-                        bottom: "-10%",
-                        opacity: "1"
-                    })
+                $(".loader__icon").fadeOut()
+                $(".loader__container").animate({
+                    height: "190px"
+                })
+                $(".loader__btn").animate({
+                    bottom: "-10%",
+                    opacity: "1"
+                })
 
             }
 
@@ -1140,10 +1151,10 @@
                     console.log("all is done1")
                 })
 
-            }).done(data=> {
+            }).done(data => {
                 loader()
-            console.log("all is done2")
-        })
+                console.log("all is done2")
+            })
 
 
 
