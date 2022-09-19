@@ -370,7 +370,7 @@
     .loader__container {
         position: fixed;
         left: 50%;
-        transform: translate(-50%, 0%);
+        transform: translate(-50%, 100%);
         z-index: 1;
         padding: var(--padding-container-1);
         width: 30%;
@@ -551,33 +551,6 @@
 
             <!-- <div class="device__row d-flex justify-content-around align-items-center" data-device_id="sd">
                 <div class=" device__card d-flex flex-column align-items-center">
-                    <p class="device__name h3 text-center">جهاز رقم #1<br><span class="h6 mt-1">(بلاى ستيشن)</span></p>
-                    <div class="device__avatar text-center">
-                        <i class="fa-brands fa-playstation"></i>
-                    </div>
-                </div>
-                <div class="action__btn d-flex justify-content-around col-3">
-                    <button class="start__btn bttn start floating" type="button" data-serial="1">ابدأ الآن</button>
-                    <button class="stop__btn bttn stop floating" type="button">إنهاء</button>
-                </div>
-
-                <div class="time__tracker">
-                    <p class="the__start m-0">00:00:00</p>
-                    <p class="timer m-0">00:00:00</p>
-                    <p class="the__end m-0">00:00:00</p>
-                </div>
-                <div class="invoice__btn disabled floating">
-                    <button class="create__invoice_btn bttn invoice" disabled>
-                        <a href="/owner/invoices/add" target="_blank">
-                            <span>إنشاء فاتورة</span>
-                            <p class="tracked__time m-0 p-.4 rounded-1">00:00:00</p>
-                        </a>
-                    </button>
-
-                </div>
-            </div> -->
-            <div class="device__row d-flex justify-content-around align-items-center" data-device_id="sd">
-                <div class=" device__card d-flex flex-column align-items-center">
                     <p class="device__name h3 text-center">جهاز رقم #2<br><span class="h6 mt-1">(بلاى ستيشن)</span></p>
                     <div class="device__avatar text-center">
                         <i class="fa-brands fa-playstation"></i>
@@ -711,7 +684,7 @@
 
             <div class="device__row"></div>
             <div class="device__row"></div>
-            <div class="device__row"></div>
+            <div class="device__row"></div> -->
         </div>
     </main>
 
@@ -722,6 +695,7 @@
     <script>
         $(document).ready(() => {
 
+            function allLogic(){
             function changeBtn(txt, color, bckColor, selector = $this) {
                 $this.html(txt)
                 $this.css({
@@ -729,73 +703,6 @@
                     background: bckColor
                 })
             }
-            // let interval;
-            // function StartButton1(interval) {
-            //     this.isRunning = false;
-            //     this.isResumed = false;
-            //     this.s = 0
-            //     this.m = 0
-            //     this.h = 0
-            //     this.element = $($this)
-            //     // this.interval = this.interval
-            //     this.intervals = []
-
-            //     this.timerDisplay = function() {
-
-            //         if (this.s < 59) {
-            //             this.s++;
-            //         } else if (this.m < 59) {
-            //             this.s = 0;
-            //             this.m++;
-            //         } else {
-            //             this.h++;
-            //         }
-
-            //         this.ss = this.s < 10 ? `0${this.s}` : this.s
-            //         this.mm = this.m < 10 ? `0${this.m}` : this.m
-            //         this.hh = this.h < 10 ? `0${this.h}` : this.h
-            //         this.t = `${this.hh}:${this.mm}:${this.ss}`
-            //         console.log(this.t)
-            //         // return this.t
-
-            //         this.element.parent().siblings(".time__tracker").find(".timer").html(this
-            //             .t)
-            //         this.element.siblings(".stop__btn").attr("data-duration", this.t)
-
-            //     }
-            //     this.start = function() {
-            //         if (!this.isRunning) {
-            //             console.log("play")
-            //             // this.isRunning = true
-            //             this.interval = setInterval(() => {
-            //                 this.timerDisplay(this.element)
-            //             }, 1000)
-            //             console.log(this.interval)
-            //         }}
-            //         this.pause = function(interval) {
-            //         console.log(interval)
-            //             this.isRunning = true;
-            //             console.log(this.isRunning, !this.isResumed)
-            //             if (this.isRunning && !this.isResumed) {
-            //                 console.log("paused")
-            //                 clearInterval(interval)
-            //             }
-            //         }
-            //         this.resume = function() {
-            //             this.isRunning = false;
-            //             this.isResumed = true
-            //             if (!this.isRunning && this.isResumed) {
-            //                 this.isRunning = true;
-            //                 this.isResumed = false;
-
-            //                 this.interval = setInterval(() => {
-            //                     this.timerDisplay(this.element)
-            //                 }, 1000)
-            //                 console.log("resumed")
-            //             }
-            //         }
-            // }
-
 
 
 
@@ -960,25 +867,9 @@
                 constructor() {
                     this.element = $(this)
                 }
-                // stop($this, $invBtn, $startBtn, $startT, $endT, stopTimer, $countDownField) {
-                // }
+                
                 stop(interval) {
-                    // console.log($startBtn)
-                    // let intervID = $startBtn.attr("data-interval")
-                    // stopTimer.stop(intervID)
-                    // $startBtn.attr("disabled", "disabled").removeClass("floating")
-
-                    // dur = $this.attr("data-duration")
-                    // // dur = $this.parent().siblings(".time__tracker").find(".timer").text()
-
-                    // $invBtn.html(dur)
-                    // $invBtn.removeClass("disabled")
-                    // changeBtn("جديد", "var(--color-base-1)", "var(--color-blue)")
-
-                    // let theStart = $startBtn.attr("data-start_time")
-                    // $startT.html(theStart).fadeIn()
-                    // let theEnd = $this.attr("data-end_time")
-                    // $endT.html(theEnd).fadeIn()
+                    
                     clearInterval(interval)
                     console.log("fromOpenTimer Stop: ",interval)
 
@@ -1043,91 +934,8 @@
                 } else {
                     runTimer.countDown($countDownFieldVal, $countDownField, $fillBG, $stopBtn, $invBtn,
                         $timer)
-                    // let countDownSecs = 59
-                    // let hh = Math.floor($countDownFieldVal / 60)
-                    // let mm = Math.floor($countDownFieldVal % 60) - 1
-                    // let count = 1
-                    // countDownTimer = setInterval(() => {
-                    //     console.log(countDownTimer)
-                    //     let hrrs = hh < 10 ? `0${hh}` : hh
-                    //     let minns = mm < 10 ? `0${mm}` : mm
-                    //     let seccs = countDownSecs < 10 ? `0${countDownSecs}` : countDownSecs
-                    //     let tt = `${hrrs}:${minns}:${seccs}`
-                    //     $timer.html(tt)
-                    //     $countDownField.attr("data-countdown", countDownTimer)
-                    //     $countDownField.attr("data-currtimer", tt)
-                    //     $countDownField.attr("data-minutes", mm)
-                    //     $countDownField.attr("data-hours", hh)
-                    //     if (countDownSecs > 0) {
-                    //         count++
-                    //         let progressed = count / ($countDownFieldVal * 60) * 100
-                    //         $fillBG.width(`+=${progressed}%`)
-                    //         countDownSecs--
-                    //     } else if (mm > 0) {
-                    //         countDownSecs = 59
-                    //         mm--
-                    //     } else if (hh > 0) {
-                    //         mm = 59
-                    //         hh--
-                    //     } else {
-                    //         console.log("done")
-                    //         let countDownID = $countDownField.attr("data-countdown")
-
-                    //         clearInterval(countDownTimer)
-                    //         $this.parent().parent().siblings(".invoice__btn").removeClass(
-                    //             "disabled")
-                    //         $fillBG.css({
-                    //             animation: "invBlicking 1s ease-in-out"
-                    //         })
-                    //         // changeBtn("جديد", "var(--color-base-1)", "var(--color-blue)",
-                    //         // $stopBtn)
-                    //         $stopBtn.html("جديد")
-                    //         $stopBtn.css({
-                    //             background: "var(--color-blue)",
-                    //             color: "var(--color-base-1)",
-                    //         })
-
-                    //         let totalH = Math.floor($countDownFieldVal / 60)
-                    //         let totalM = Math.floor($countDownFieldVal % 60) - 1
-                    //         totalH = hh < 10 ? `0${hh}` : hh
-                    //         totalM = mm < 10 ? `0${mm}` : mm
-                    //         $invBtn.html(`${totalH}:${totalM}`)
                 }
-
-                // runTimer.countDown($countDownFieldVal, $timer)
-
-                // if (countDownSecs > 0) {
-                //     countDownSecs--;
-                //     console.log(countDownSecs)
-
-                // } else if (countDownMins > 0) {
-                //     countDownSecs = 59;
-                //     countDownMins--;
-                // } else {
-                //     countDownMins = 59;
-                //     countDownHrs--;
-                // }
-                // t = `${countDownHrs}:${countDownMins}:${countDownSecs}`
-                // $timer.html(t)
-
-                // console.log(t)
-
-                // }, 1000)
-                // $this.addClass("disabled")
-
-
-                //     }
             })
-
-
-
-
-            //==================================
-            //TODO: USE The StopButton Class
-            //TODO: WRITE the setTimeout Logic Start     
-
-
-
 
             function stopFunction($this, $invBtn, $startBtn, $startT, $endT, stopTimer, $countDownField,
                 $timer, $fillBG) {
@@ -1180,8 +988,6 @@
                     let countDownID = $countDownField.attr("data-countdown")
                     console.log("countDown Clear: ", countDownID)
                     clearInterval(countDownID)
-
-
                     $invBtn.removeClass("disabled")
                     changeBtn("جديد", "var(--color-base-1)", "var(--color-blue)")
                     let hh = +$countDownField.attr("data-hours")
@@ -1257,82 +1063,7 @@
             })
 
 
-
-            // function stopFunction1() {
-
-            //     $(".stop__btn").click(function () {
-            //         $this = $(this)
-            //         let $startBtn = $this.siblings(".start__btn")
-            //         let $devCard = $this.parent().parent().siblings(".device__card")
-            //         let $timer = $this.parent().parent().siblings(".time__tracker").find(".timer")
-            //         let $startT = $this.parent().parent().siblings(".time__tracker").find(".the__start")
-            //         let $endT = $this.parent().parent().siblings(".time__tracker").find(".the__end")
-            //         let $invBtn = $this.parent().parent().siblings(".invoice__btn").find(
-            //             ".tracked__time")
-            //         let $countDownField = $this.parent().siblings(".input__container").find(
-            //             ".input__field")
-            //         let $countDownFieldVal = $this.parent().siblings(".input__container").find(
-            //             ".input__field").val()
-
-            //         $startBtn.html("ابدأ")
-            //         $startBtn.css({
-            //             background: "var(--color-base-1)",
-            //             color: "var(--color-base-2)",
-            //         })
-            //         $devCard.removeClass("playing")
-
-
-            //         let stopTimer = new StopButton()
-            //         endTime = new Date().toLocaleTimeString().slice(0, -3)
-            //         $this.attr("data-end_time", endTime)
-
-
-
-            //         // if ($this.html() == "إنهاء") {
-            //         //     let intervID = $startBtn.attr("data-interval")
-            //         //     stopTimer.stop(intervID)
-            //         //     $startBtn.attr("disabled", "disabled").removeClass("floating")
-
-            //         //     dur = $this.attr("data-duration")
-            //         //     // dur = $this.parent().siblings(".time__tracker").find(".timer").text()
-
-            //         //     $invBtn.html(dur)
-            //         //     $invBtn.removeClass("disabled")
-            //         //     changeBtn("جديد", "var(--color-base-1)", "var(--color-blue)")
-
-            //         //     let theStart = $startBtn.attr("data-start_time")
-            //         //     $startT.html(theStart).fadeIn()
-            //         //     let theEnd = $this.attr("data-end_time")
-            //         //     $endT.html(theEnd).fadeIn()
-
-            //         // } else {
-
-
-            //         //     changeBtn("إنهاء", "var(--color-base-1)", "var(--color-red)")
-            //         //     $countDownField.removeAttr("disabled")
-            //         //     $startBtn.removeAttr("disabled").addClass("floating")
-            //         //     $(".the__start, .the__end").html(`00:00:00`).fadeOut()
-            //         //     $timer.html(`00:00:00`)
-            //         //     $invBtn.html(`00:00:00`)
-            //         //     $startBtn.attr("data-seconds", "00")
-            //         //     $startBtn.attr("data-minutes", "00")
-            //         //     $startBtn.attr("data-hours", "00")
-            //         //     $invBtn.addClass("disabled")
-            //         //     // $(".start__btn").attr("disabled")
-            //         // }
-
-
-            //     })
-
-            // }
-
-            // $(".create__invoice_btn").click(function () {
-            //     $this.siblings(".time__tracker").find(".timer").html(`00:00:00`)
-            //     window.location.open("/owner/invoices/add")
-            // })
-
-
-            loader()
+        }
 
             function loader() {
                 // $(".loader__container").fadeIn().css({
@@ -1340,8 +1071,9 @@
                 // })
                 $(".loader__btn").click(function () {
                     $(".loader__container").fadeOut()
+                    console.log("yes")
+                    allLogic()
                 })
-                setTimeout(() => {
                     $(".loader__icon").fadeOut()
                     $(".loader__container").animate({
                         height: "190px"
@@ -1350,7 +1082,7 @@
                         bottom: "-10%",
                         opacity: "1"
                     })
-                }, 1000)
+
             }
 
             // ============== API CALL ===========
@@ -1365,18 +1097,24 @@
                     let dvcDesc = _.description
                     // console.log(dvcName, dvcDesc)
 
-                    let dvc =
-                        `
-<div class="device__row d-flex justify-content-around align-items-center" data-device_id="sd">
+
+                    let dvc = `
+                    <div class="device__row d-flex justify-content-around align-items-center" data-device_id="sd">
                 <div class=" device__card d-flex flex-column align-items-center">
-                    <p class="device__name h3 text-center">${dvcName}<span class="h6 mt-1">(${dvcDesc})</span></p>
+                    <p class="device__name h3 text-center">${dvcName}<br><span class="h6 mt-1">(${dvcDesc})</span></p>
                     <div class="device__avatar text-center">
                         <i class="fa-brands fa-playstation"></i>
                     </div>
                 </div>
-                <div class="action__btn d-flex justify-content-around col-3">
-                    <button class="start__btn bttn start floating" type="button">ابدأ الآن</button>
-                    <button class="stop__btn bttn stop floating" type="button">إنهاء</button>
+                <div class="buttons__container">
+                    <div
+                        class="action__btn d-flex justify-content-around align-items-center text-center flex-column col-3 ">
+                        <button class="start__btn bttn start floating" type="button" data-serial="1">ابدأ</button>
+                        <button class="stop__btn bttn stop" type="button" disabled>إنهاء</button>
+                    </div>
+
+                    <div class="input__container"><input class="input__field" type="number" placeholder="أدخل الوقت" />
+                    </div>
                 </div>
 
                 <div class="time__tracker">
@@ -1385,21 +1123,27 @@
                     <p class="the__end m-0">00:00:00</p>
                 </div>
                 <div class="invoice__btn disabled floating">
+                    <div class="fill__pct"></div>
                     <button class="create__invoice_btn bttn invoice" disabled>
                         <a href="/owner/invoices/add" target="_blank">
                             <span>إنشاء فاتورة</span>
                             <p class="tracked__time m-0 p-.4 rounded-1">00:00:00</p>
                         </a>
                     </button>
-
                 </div>
             </div>
-`
+                    `
+
+
 
                     $(".all__devices").append(dvc)
+                    console.log("all is done1")
                 })
 
-            })
+            }).done(data=> {
+                loader()
+            console.log("all is done2")
+        })
 
 
 
